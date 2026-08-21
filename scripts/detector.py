@@ -8,7 +8,7 @@ LABELS = {
     "ID_NUMBER": ("公民身份号码", "身份证号码", "身份证号", "身份证", "证件号码", "护照号", "社保号"),
     "PHONE": ("联系电话", "联系方式", "手机号", "手机", "电话"),
     "ADDRESS": ("联系人地址", "联系地址", "户籍地址", "现住址", "家庭地址", "工作单位", "住址", "地址"),
-    "BIRTH_DATE": ("出生日期", "出生年月", "出生"),
+    "BIRTH_DATE": ("Date of Birth", "DOB", "出生日期", "出生年月", "出生"),
     "BANK_CARD": ("银行卡号码", "银行卡号", "银行账号", "银行账户", "银行卡"),
     "MEDICAL_ID": (
         "住院病历号", "患者编号", "患者ID", "病案号", "病历号", "病人号", "门诊号", "住院号",
@@ -39,7 +39,10 @@ FIELD_BOUNDARY_LABELS = ALL_LABELS + (
 )
 PHONE_RE = re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)")
 LANDLINE_RE = re.compile(r"(?<!\d)0\d{2,3}[- ]?\d{7,8}(?:-\d{1,6})?(?!\d)")
-PHONE_VALUE_RE = re.compile(r"(?:1[3-9]\d{9}|0\d{2,3}[- ]?\d{7,8}(?:-\d{1,6})?)")
+NANP_PHONE_RE = re.compile(r"(?<!\d)(?:\+?1[-. ]?)?\(?[2-9]\d{2}\)?[-. ]\d{3}[-. ]\d{4}(?!\d)")
+PHONE_VALUE_RE = re.compile(
+    r"(?:1[3-9]\d{9}|0\d{2,3}[- ]?\d{7,8}(?:-\d{1,6})?|(?:\+?1[-. ]?)?\(?[2-9]\d{2}\)?[-. ]\d{3}[-. ]\d{4})"
+)
 ID_RE = re.compile(r"(?<!\d)[1-9]\d{16}[\dXx](?![\dXx])")
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}")
 BANK_CARD_RE = re.compile(r"(?<!\d)\d{13,19}(?!\d)")
@@ -202,7 +205,10 @@ def inline_value_span(text, entity, label):
     elif entity == "ID_NUMBER":
         match = re.search(r"[A-Za-z0-9][A-Za-z0-9*＊\s\-]{5,23}", remainder)
     elif entity == "BIRTH_DATE":
-        match = re.search(r"(?:\d{4}[-./年]\d{1,2}[-./月]\d{1,2}日?|\d{8})", remainder)
+        match = re.search(
+            r"(?:\d{4}[-./年]\d{1,2}[-./月]\d{1,2}日?|\d{1,2}[-./]\d{1,2}[-./]\d{4}|\d{8})",
+            remainder,
+        )
     elif entity == "BANK_CARD":
         match = re.search(r"\d[\d\s-]{11,25}\d", remainder)
     elif entity == "ADDRESS":
@@ -236,6 +242,8 @@ def direct_detections(records):
                 hits.append(make_detection("PHONE", "regex-normalized", index, text, record["box"]))
         for match in LANDLINE_RE.finditer(text):
             hits.append(make_detection("PHONE", "landline-regex", index, text, record["box"], match.span()))
+        for match in NANP_PHONE_RE.finditer(text):
+            hits.append(make_detection("PHONE", "nanp-phone-regex", index, text, record["box"], match.span()))
         for match in ID_RE.finditer(re.sub(r"[\s\-]", "", text)):
             candidate = match.group(0)
             if valid_cn_id(candidate):
@@ -336,6 +344,8 @@ def virtual_match_detections(records, rows):
                 hits.extend(mapped_match(records, mapping, match.span(), "PHONE", "split-row"))
             for match in LANDLINE_RE.finditer(text):
                 hits.extend(mapped_match(records, mapping, match.span(), "PHONE", "split-row-landline"))
+            for match in NANP_PHONE_RE.finditer(text):
+                hits.extend(mapped_match(records, mapping, match.span(), "PHONE", "split-row-nanp-phone"))
             for match in ID_RE.finditer(text):
                 if valid_cn_id(match.group(0)) or row_has_id_label:
                     hits.extend(mapped_match(records, mapping, match.span(), "ID_NUMBER", "split-row"))
@@ -590,6 +600,51 @@ def peripheral_ui_identity_detections(records, image_size):
             match = re.match(r"[一-鿿·]{2,4}(?=" + "|".join(map(re.escape, UI_PERSON_ROLE_HINTS)) + r")", text)
             if match:
                 hits.append(make_detection("NAME", "ui-name-before-role", index, record["text"], record["box"], match.span()))
+    return hits
+
+
+def burned_in_medical_header_detections(records, image_size):
+    if not image_size:
+        return []
+    top_limit = image_size[1] * 0.12
+    top_records = [
+        (index, record) for index, record in enumerate(records)
+        if rect_center(record["box"])[1] <= top_limit
+    ]
+    has_birth_anchor = any(
+        re.search(r"\b(?:DOB|Date of Birth)\s*[:：]", record["text"], re.IGNORECASE)
+        for _, record in top_records
+    )
+    if not has_birth_anchor:
+        return []
+
+    hits = []
+    for index, record in top_records:
+        text = record["text"]
+        name_match = re.match(r"[A-Z][A-Z' -]{2,60}\s+\[[MFU]\]", text)
+        if name_match:
+            hits.append(make_detection(
+                "IDENTITY_ROW",
+                "burned-in-medical-name-sex",
+                index,
+                text,
+                record["box"],
+                name_match.span(),
+            ))
+        birth_match = re.search(
+            r"\b(?:DOB|Date of Birth)\s*[:：]\s*(\d{1,2}[-./]\d{1,2}[-./]\d{4}|\d{4}[-./]\d{1,2}[-./]\d{1,2})",
+            text,
+            re.IGNORECASE,
+        )
+        if birth_match:
+            hits.append(make_detection(
+                "BIRTH_DATE",
+                "burned-in-medical-birth-date",
+                index,
+                text,
+                record["box"],
+                birth_match.span(1),
+            ))
     return hits
 
 
@@ -852,6 +907,7 @@ def detect(records, image_size=None, source_terms=()):
     detections.extend(masked_id_card_detections(records, rows, image_size))
     detections.extend(source_term_detections(records, source_terms))
     detections.extend(peripheral_ui_identity_detections(records, image_size))
+    detections.extend(burned_in_medical_header_detections(records, image_size))
     detections.extend(header_identifier_detections(records, rows, image_size))
     detections.extend(identity_row_detections(records, rows, image_size))
     detections.extend(contact_identity_row_detections(rows))

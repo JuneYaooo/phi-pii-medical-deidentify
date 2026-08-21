@@ -32,7 +32,7 @@ NON_NAME_DIRECTORY_HINTS = (
     "影像", "用药", "记录", "汇总", "测试", "手术", "住院", "门诊", "资料", "文档",
     "医院", "诊所", "中心", "大学", "公司", "集团", "研究院", "卫生院", "科室",
 )
-POLICY_VERSION = "2026-08-21.2"
+POLICY_VERSION = "2026-08-21.3"
 
 
 def classify_path(path):
@@ -229,6 +229,7 @@ def convert_office_to_pdf(path):
 
 TEXT_PATTERNS = (
     (re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)"), "[电话]"),
+    (re.compile(r"(?<!\d)(?:\+?1[-. ]?)?\(?[2-9]\d{2}\)?[-. ]\d{3}[-. ]\d{4}(?!\d)"), "[电话]"),
     (re.compile(r"(?<!\d)[1-9]\d{16}[\dXx](?![\dXx])"), "[身份证]"),
     (re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"), "[邮箱]"),
 )
@@ -251,10 +252,13 @@ TEXT_LABELED_PATTERNS = (
     ), "[地址]"),
     (_label_pattern(
         detector.LABELS["BIRTH_DATE"],
-        r"(?:\d{4}[-./年]\d{1,2}[-./月]\d{1,2}日?|\d{8})",
+        r"(?:\d{4}[-./年]\d{1,2}[-./月]\d{1,2}日?|\d{1,2}[-./]\d{1,2}[-./]\d{4}|\d{8})",
     ), "[出生日期]"),
     (_label_pattern(detector.LABELS["BANK_CARD"], r"\d[\d -]{11,25}\d"), "[银行卡]"),
-    (_label_pattern(detector.LABELS["PHONE"], r"(?:\+?86[- ]?)?(?:1[3-9]\d{9}|0\d{2,3}[- ]?\d{7,8}(?:-\d{1,6})?)"), "[电话]"),
+    (_label_pattern(
+        detector.LABELS["PHONE"],
+        r"(?:\+?86[- ]?)?(?:1[3-9]\d{9}|0\d{2,3}[- ]?\d{7,8}(?:-\d{1,6})?)|(?:\+?1[-. ]?)?\(?[2-9]\d{2}\)?[-. ]\d{3}[-. ]\d{4}",
+    ), "[电话]"),
     (_label_pattern(detector.LABELS["ID_NUMBER"], r"[A-Za-z0-9][A-Za-z0-9\-]{5,23}"), "[证件号]"),
     (_label_pattern(detector.LABELS["MEDICAL_ID"], r"[A-Za-z0-9][A-Za-z0-9_./\-]{1,}"), "[医疗编号]"),
 )

@@ -13,7 +13,24 @@
 
 > 本项目不是医疗隐私合规认证，也不构成法律意见或完全匿名保证。任何材料对外分享前，都应完成最终人工复核。
 
-## 真实效果
+## 效果展示
+
+下面是同一张医学影像的实际输入和本项目实际输出，没有手工补画遮挡。左上角原本烧录了患者姓名、性别和出生日期；处理后这些身份信息被不透明黑块覆盖，医学影像主体保持可见。
+
+| 处理前 | 本项目处理后 |
+| --- | --- |
+| ![处理前：医学影像左上角带有身份信息](docs/assets/evaluation/open-medical-image-before.png) | ![处理后：身份信息被不透明黑块遮挡](docs/assets/evaluation/open-medical-image-after.png) |
+
+| 结果 | 说明 |
+| --- | --- |
+| 已遮挡 | 姓名、性别和出生日期 |
+| 处理后文字残留 | 0 项 |
+| 保留内容 | 医学影像主体和非身份信息 |
+| 审核状态 | 需要人工复核，因为整张影像只有两行可识别小字，自动检查认为文字过稀 |
+
+这张图来自专门评估医学影像去身份化的 Pseudo-PHI-DICOM-Data 数据集，其中身份字段是用于测评的伪身份信息，不是真实患者身份。数据集由 The Cancer Imaging Archive 发布，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可；本项目使用的是 [Presidio 收录并获得原数据集所有者许可的测试文件](https://github.com/data-privacy-stack/presidio/blob/main/presidio-image-redactor/tests/test_data/png_images/2_ORIGINAL.png)。完整数据集和引用信息可通过 [DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072) 追踪，项目内来源编号为 `SRC-PUBLIC-DICOM-001`。
+
+## 真实病理报告评估
 
 一张包含完整患者字段的真实中文病理报告已完成隔离评估。
 
@@ -130,7 +147,14 @@
 
 ## 素材来源与追踪
 
-真实患者字段病理报告使用来源编号 `SRC-REAL-PATHOLOGY-001` 记录。
+| 来源编号 | 素材 | 授权与用途 |
+| --- | --- | --- |
+| `SRC-PUBLIC-DICOM-001` | TCIA Pseudo-PHI-DICOM-Data 医学影像，经 Presidio 测试资源取得 | CC BY 4.0，可公开展示和追踪 |
+| `SRC-REAL-PATHOLOGY-001` | 公开网页中的真实患者字段病理报告 | 转载和患者授权无法核实，仅限隔离的本地评估 |
+
+公开医学影像的标准引用为：Rutherford, M. 等，*A DICOM dataset for evaluation of medical image de-identification (Pseudo-PHI-DICOM-Data)*，The Cancer Imaging Archive，2021，[DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072)。
+
+真实患者字段病理报告的追踪记录如下：
 
 | 项目 | 记录 |
 | --- | --- |

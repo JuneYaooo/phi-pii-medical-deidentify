@@ -13,7 +13,24 @@ This project is designed for photographs, scans, prescriptions, laboratory repor
 
 > This project is not a privacy certification, legal advice, or a guarantee of complete anonymity. Every document requires a final human review before external release.
 
-## Real-world result
+## Before and after
+
+The images below are the actual input and actual project output from the same medical image; no masks were added by hand. The source had a patient name, sex, and birth date burned into its upper-left pixels. The output covers those identity fields with opaque black masks while preserving the medical image itself.
+
+| Before processing | Project output |
+| --- | --- |
+| ![Before processing: identity text appears in the upper-left corner](docs/assets/evaluation/open-medical-image-before.png) | ![After processing: identity text is covered with opaque masks](docs/assets/evaluation/open-medical-image-after.png) |
+
+| Result | Explanation |
+| --- | --- |
+| Covered | Name, sex, and birth date |
+| Residual text findings | 0 |
+| Preserved | Medical image and non-identity content |
+| Review status | Human review required because the image contains only two recognized lines of small text, which the automatic quality check considers too sparse |
+
+The image comes from Pseudo-PHI-DICOM-Data, a dataset designed to evaluate medical-image de-identification. Its identity fields are pseudo-PHI used for evaluation, not a real patient's identity. The Cancer Imaging Archive publishes the dataset under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); this project uses a [Presidio test file stored with permission from the original dataset owners](https://github.com/data-privacy-stack/presidio/blob/main/presidio-image-redactor/tests/test_data/png_images/2_ORIGINAL.png). The complete dataset and citation are tracked through [DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072), and the local source ID is `SRC-PUBLIC-DICOM-001`.
+
+## Real pathology-report evaluation
 
 One real Chinese pathology-report photograph containing complete patient fields was evaluated in an isolated environment.
 
@@ -130,7 +147,14 @@ These materials lacked complete field-level ground truth, so they are used to ob
 
 ## Material provenance
 
-The pathology report with visible patient fields is tracked as `SRC-REAL-PATHOLOGY-001`.
+| Source ID | Material | Permission and use |
+| --- | --- | --- |
+| `SRC-PUBLIC-DICOM-001` | A TCIA Pseudo-PHI-DICOM-Data medical image obtained through Presidio's test resources | CC BY 4.0; suitable for public display and tracking |
+| `SRC-REAL-PATHOLOGY-001` | A pathology report with real patient fields from a public page | Redistribution and patient authorization could not be verified; isolated local evaluation only |
+
+The public medical-image citation is: Rutherford, M. et al., *A DICOM dataset for evaluation of medical image de-identification (Pseudo-PHI-DICOM-Data)*, The Cancer Imaging Archive, 2021, [DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072).
+
+The real pathology report is tracked as follows:
 
 | Item | Record |
 | --- | --- |

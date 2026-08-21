@@ -63,6 +63,32 @@ def test_detector_reassembles_split_phone_and_maps_back_to_boxes():
     assert all(box[0] >= 90 for box in phone_boxes)
 
 
+def test_north_american_phone_is_masked_in_images_and_native_text():
+    records = [{"text": "Contact (212) 555-1234", "box": [10, 10, 260, 35]}]
+
+    detections = detector.detect(records, image_size=(500, 300))
+    redacted, count, residuals = redact_native_text("Contact (212) 555-1234")
+
+    assert any(item["entity"] == "PHONE" for item in detections)
+    assert count == 1
+    assert residuals == 0
+    assert "555-1234" not in redacted
+
+
+def test_burned_in_medical_image_header_masks_name_sex_and_birth_date():
+    records = [
+        {"text": "KAUFMAN SCOTT [M] 03.09.2012", "box": [0, 0, 230, 12]},
+        {"text": "DOB: 07.22.1943", "box": [1, 12, 116, 28]},
+    ]
+
+    detections = detector.detect(records, image_size=(394, 552))
+    entities = {item["entity"] for item in detections}
+
+    assert "IDENTITY_ROW" in entities
+    assert "BIRTH_DATE" in entities
+    assert all(item["box"][1] <= 28 for item in detections)
+
+
 def test_medical_identifier_labels_mask_values_and_preserve_nearby_batch_number():
     records = [
         {"text": "处方号：RX20250315001", "box": [10, 10, 230, 35]},
