@@ -1,0 +1,4 @@
+interface:
+  display_name: "PHI/PII 病历去隐私化"
+  short_description: "本地识别并不可逆遮挡中文医疗材料中的PHI与PII隐私信息"
+  default_prompt: "使用 $phi-pii-medical-deidentify 对这批医疗材料执行本地去隐私化并生成残留复检报告。"

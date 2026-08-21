@@ -1,0 +1,5 @@
+Pillow>=11.0,<13
+pillow-heif>=0.15.0,<1
+paddlepaddle>=3.2.1,<4
+paddleocr>=3.7.0,<4
+pypdfium2>=4.30.0,<5

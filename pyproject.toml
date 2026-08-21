@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phi-pii-medical-deidentify"
+version = "0.1.0"
+description = "Standalone local PHI and PII de-identification for Chinese medical-record materials"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+keywords = ["phi", "pii", "hipaa", "medical-records", "de-identification", "ocr", "agent-skill"]
+dependencies = [
+  "Pillow>=11.0,<13",
+  "pillow-heif>=0.15.0,<1",
+  "paddlepaddle>=3.2.1,<4",
+  "paddleocr>=3.7.0,<4",
+  "pypdfium2>=4.30.0,<5",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[project.scripts]
+phi-pii-deidentify = "scripts.deidentify:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
