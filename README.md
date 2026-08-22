@@ -32,7 +32,7 @@ The asset is an MIT-licensed [ReportSenseAI test file at a fixed commit](https:/
 
 ## Input-quality coverage
 
-The English page uses English-language evidence only. Chinese evaluations are documented in the [Chinese README](README.zh-CN.md).
+The English page uses English-language medical evidence only. Every showcased case is a laboratory report, prescription envelope, or prescription-book page. Chinese evaluations are documented in the [Chinese README](README.zh-CN.md). The later cross-domain section describes configurability only; it is not part of the evaluation evidence.
 
 | Input type | Current English evidence | Result |
 | --- | --- | --- |
