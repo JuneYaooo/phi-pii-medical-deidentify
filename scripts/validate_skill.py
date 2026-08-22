@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_PATHS = (
     "SKILL.md",
     "README.md",
-    "README.zh-CN.md",
+    "README.en.md",
     "LICENSE",
     "CONTRIBUTING.md",
     "SECURITY.md",
