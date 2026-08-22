@@ -48,7 +48,7 @@
 
 | 处理前 | 本项目处理后 |
 | --- | --- |
-| [![处理前：协和检验报告中可见姓名和部分单号](https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png)](https://www.pumch.cn/reportquery.html) | ![处理后：姓名和单号被遮挡，检验结果保留](docs/assets/evaluation/chinese-pumch-lab-after.png) |
+| <a href="https://www.pumch.cn/reportquery.html"><img src="https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png" alt="处理前：协和检验报告中可见姓名和部分单号" width="360"></a><br><sub><a href="https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png">打开原图</a></sub> | ![处理后：姓名和单号被遮挡，检验结果保留](docs/assets/evaluation/chinese-pumch-lab-after.png) |
 
 | 评估项 | 实际结果 |
 | --- | --- |
@@ -65,7 +65,7 @@
 
 | 处理前 | 本项目处理后 |
 | --- | --- |
-| [![处理前：折痕检查报告含 MR 号、年龄、住院号和床号](https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg)](https://www.textin.com/tasks/medical-report-extraction) | ![处理后：报告编号和身份字段被遮挡，折痕区域仍需人工检查](docs/assets/evaluation/chinese-textin-folded-report-after.jpg) |
+| <a href="https://www.textin.com/tasks/medical-report-extraction"><img src="https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg" alt="处理前：折痕检查报告含 MR 号、年龄、住院号和床号" width="360"></a><br><sub><a href="https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg">打开原图</a></sub> | ![处理后：报告编号和身份字段被遮挡，折痕区域仍需人工检查](docs/assets/evaluation/chinese-textin-folded-report-after.jpg) |
 
 | 评估项 | 实际结果 |
 | --- | --- |
