@@ -111,6 +111,29 @@ def _irregular_text_geometry_review(records, image_size, threshold=0.35):
     }
 
 
+def _large_text_geometry_review(records, image_size, threshold=0.06):
+    heights = [
+        max(1.0, float(record["box"][3]) - float(record["box"][1]))
+        for record in records
+        if record.get("box") and len(record["box"]) == 4
+    ]
+    if len(heights) < 8:
+        return None
+    _, height = image_size
+    median_ratio = statistics.median(heights) / max(float(height), 1.0)
+    if median_ratio <= threshold:
+        return None
+    fingerprint = f"large-text-geometry:{image_size[0]}x{height}:{median_ratio:.3f}"
+    return {
+        "status": "needs_manual_review",
+        "entity": "DOCUMENT_QUALITY",
+        "source": "ocr-layout-heuristic",
+        "box": [0, 0, image_size[0], height],
+        "reason": "large_text_geometry_requires_review",
+        "finding_hash": hashlib.sha256(fingerprint.encode("utf-8")).hexdigest()[:16],
+    }
+
+
 def _sensitive_low_confidence_reviews(records, accepted=(), threshold=0.3):
     accepted_entities = {}
     for detection in accepted:
@@ -187,6 +210,9 @@ def redact_image(image, ocr, source_terms=(), max_rounds=2, padding=8, auto_rota
             irregular_geometry = _irregular_text_geometry_review(records, current.size)
             if irregular_geometry:
                 manual_review.append(irregular_geometry)
+            large_geometry = _large_text_geometry_review(records, current.size)
+            if large_geometry:
+                manual_review.append(large_geometry)
         detections = detector.detect(records, current.size, tuple(source_terms))
         accepted, review = policy.apply_balanced_policy(detections, current.size, records)
         if round_number == 1:
