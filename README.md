@@ -32,7 +32,7 @@
 | 内容保留 | 职业史、体检结论、检查日期和说明文字保持可读 |
 | 最终状态 | 需要人工复核；原图由两张报告页拼接，版面结构不规则 |
 
-原图来自 LGPL-3.0 许可的 [healthyCheckUi 功能截图](https://github.com/scmt1/healthyCheckUi/blob/c6b50346993f7e8debdc567e3469b8fa74eaaafb/vx_images/206350912225539.jpg)，其中身份信息为系统演示数据。来源编号为 `SRC-PUBLIC-CN-OCCUPATIONAL-001`。
+来源：[healthyCheckUi 功能截图](https://github.com/scmt1/healthyCheckUi/blob/c6b50346993f7e8debdc567e3469b8fa74eaaafb/vx_images/206350912225539.jpg)。
 
 ### 标准电子报告：北京协和医院检验单
 
@@ -47,9 +47,9 @@
 | 自动遮挡 | 4 处，包含姓名、单号和身份信息行 |
 | 处理后残留 | 二次 OCR 未检出规则命中的身份字段 |
 | 人工对照 | 姓名和单号已覆盖；申请科室被误遮；医生姓名保留 |
-| 最终状态 | 必须人工复核，不能直接对外发布 |
+| 最终状态 | 申请科室存在误遮，确认处理结果后再使用 |
 
-原图来自 [北京协和医院报告查询](https://www.pumch.cn/reportquery.html)。该站点未明确授予开放再发布许可，使用或转载前应自行确认许可。来源编号为 `SRC-CONTROLLED-CN-PUMCH-LAB-001`，详细出处和文件指纹见 [第三方测评原图来源](docs/assets/evaluation/third-party/NOTICE.md)。
+来源：[北京协和医院报告查询](https://www.pumch.cn/reportquery.html)。
 
 ### 手机拍照并有明显折痕：MR 检查报告单
 
@@ -66,9 +66,9 @@
 | 人工对照 | 折痕和二维码仍需检查，部分身份行遮挡范围偏宽 |
 | 最终状态 | 触发版面异常人工复核，不可自动发布 |
 
-原图来自 TextIn 的 [医疗报告抽取示例页](https://www.textin.com/tasks/medical-report-extraction)。该页面未明确授予开放再发布许可，使用或转载前应自行确认许可。来源编号为 `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001`，详细出处和文件指纹见 [第三方测评原图来源](docs/assets/evaluation/third-party/NOTICE.md)。
+来源：TextIn [医疗报告抽取示例页](https://www.textin.com/tasks/medical-report-extraction)。
 
-### 手写材料：必须人工复核
+### 手写材料的限制
 
 手写姓名、病历号和地址可能无法被 OCR 稳定识别。未被识别的文字不会出现在二次 OCR 残留结果中，因此“残留为 0”不代表手写隐私已经清除。处理手写病历或处方时，应逐项核对患者信息，并检查签名、印章、二维码和页面边缘。
 
@@ -156,29 +156,19 @@ OCR 和本地小模型不是二选一，而是同一条去隐私流水线中的�
 
 文件结构稳定时，通常重新配置遮挡、保留和复核规则即可复用主要流程。版式、手写比例或专业编号差异较大时，还需要增加相应的布局判断和授权测试样本。
 
-## 素材来源与追踪
+## 素材来源
 
-| 来源编号 | 素材 | 授权与用途 |
-| --- | --- | --- |
-| `SRC-PUBLIC-CN-OCCUPATIONAL-001` | healthyCheckUi 中文职业健康检查表 | LGPL-3.0，上游允许学习和教学案例，可公开展示和追踪 |
-| `SRC-CONTROLLED-CN-PUMCH-LAB-001` | 北京协和医院检验报告截图 | 原图副本用于可重复评测；来源可追踪，不属于项目 MIT 许可范围 |
-| `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001` | TextIn 折痕 MR 检查报告示例 | 原图副本用于可重复评测；来源可追踪，不属于项目 MIT 许可范围 |
+| 素材 | 来源与使用说明 |
+| --- | --- |
+| 中文职业健康检查表 | [healthyCheckUi 功能截图](https://github.com/scmt1/healthyCheckUi/blob/c6b50346993f7e8debdc567e3469b8fa74eaaafb/vx_images/206350912225539.jpg)，LGPL-3.0，用于学习和教学案例 |
+| 北京协和医院检验报告截图 | [北京协和医院报告查询](https://www.pumch.cn/reportquery.html)，原站未明确提供开放再发布许可 |
+| TextIn 折痕 MR 检查报告 | [TextIn 医疗报告抽取示例](https://www.textin.com/tasks/medical-report-extraction)，原站未明确提供开放再发布许可 |
 
-公开职业健康检查表固定在 healthyCheckUi 提交 `c6b50346993f7e8debdc567e3469b8fa74eaaafb`，获取日期为 2026 年 8 月 22 日。仓库内处理前文件指纹为 `92a716af0c62ede83854b09e775cfa99eaddfa962558cc7da363e3482bb3ea33`，处理后文件指纹为 `34ca89dc781aeebd70127282c379bcc06f9d3c33698756292a1cc150e4c38db1`。
+获取日期、原始图片地址和文件指纹见 [第三方测评原图来源](docs/assets/evaluation/third-party/NOTICE.md)。第三方素材不属于本项目的 MIT 许可范围，使用或转载前请确认原发布方要求。
 
-来源台账保存网页地址、固定版本、获取日期、文件指纹、授权状态和对应结果。仓库内第三方原图集中放在独立目录并保留来源声明；使用或转载前仍需自行确认原发布方许可。
+## 社区
 
-## 必须人工复核
-
-- 手写内容、签名、印章或低清晰度照片
-- 倾斜、旋转、透视变形、反光或部分遮挡
-- 人脸、头像、指纹等非文字身份信息
-- 可能编码患者编号的二维码和条码
-- 页面被裁剪，无法确认字段名称或上下文
-- 罕见疾病、日期和机构组合可能间接识别患者
-- 处理结果明确提示需要复核
-
-对外发布前，应同时检查每一页的文字、图片边缘、条码、二维码、文件名和附加信息。
+[**LINUX DO — 中文开发者社区**](https://linux.do/)
 
 ## 许可
 

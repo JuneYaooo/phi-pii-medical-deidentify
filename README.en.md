@@ -34,7 +34,7 @@ This modern CBC report visibly contains a patient name, age and sex, registratio
 | Manual comparison | The age mask slightly overlaps the referring-doctor line; the barcode and QR code remain visible |
 | Final status | Human review required before release, especially for the barcode and QR code |
 
-The source is the MIT-licensed [MedOCR laboratory image at a fixed commit](https://github.com/DeepLumiere/MedOCR/blob/9da1023b2c51079220ea1a0378ceadcf1ce8eb73/labimage.png). The upstream repository does not independently establish the patient's publication status, so this copy is retained as traceable evaluation material rather than presented as proof of patient consent. Source ID: `SRC-CONTROLLED-EN-MEDOCR-CBC-001`.
+Source: [MedOCR laboratory image](https://github.com/DeepLumiere/MedOCR/blob/9da1023b2c51079220ea1a0378ceadcf1ce8eb73/labimage.png).
 
 ### Photographed handwritten prescription
 
@@ -52,7 +52,7 @@ This phone photograph contains a handwritten patient name, age, sex, clinical de
 | Preserved | Date, clinical description, medicines, doses, weight, and clinician information |
 | Final status | Mandatory human review because handwriting and irregular text geometry can still hide OCR misses |
 
-The source is the MIT-licensed [healthcare-ocr sample prescription at a fixed commit](https://github.com/United-We-Care/healthcare-ocr/blob/a7a11f01f0f70b072e00ba4c3b4f0a13ad8e900f/ocr/sample_files/hw_prescription.jpg). The image itself credits a prior Facebook post, and the upstream repository does not independently establish patient consent or original image rights. It is therefore tracked as evaluation material, not as freely reusable patient data. Source ID: `SRC-CONTROLLED-EN-HANDWRITTEN-RX-001`.
+Source: [healthcare-ocr sample prescription](https://github.com/United-We-Care/healthcare-ocr/blob/a7a11f01f0f70b072e00ba4c3b4f0a13ad8e900f/ocr/sample_files/hw_prescription.jpg).
 
 ### Structured handwriting: 40 patient names
 
@@ -69,7 +69,7 @@ This scanned register has a clearly printed “Name of Patient” column followe
 | Manual comparison | The visible name column is covered; dates and payment entries remain readable |
 | Final status | Mandatory human review because handwriting outside the recognized column may still be missed |
 
-The source is Wellcome Collection record [Register of patients](https://wellcomecollection.org/works/b9gymynv), produced in 1910 and licensed CC BY 4.0. The exact source is volume `b21892830`, page `b21892830_HB13_6_29_0006.JP2`. The local source ID is `SRC-PUBLIC-EN-REGISTER-1910-001`.
+Source: Wellcome Collection, [Register of patients](https://wellcomecollection.org/works/b9gymynv), CC BY 4.0.
 
 Every result remains subject to human review, especially when handwriting, irregular layouts, barcodes, or QR codes are present.
 
@@ -157,33 +157,19 @@ The workflow is not limited to healthcare. Define three groups: information that
 
 Stable document layouts usually require only a new masking, preservation, and review policy. Major differences in layout, handwriting, or specialist numbering still need corresponding layout rules and authorized evaluation examples.
 
-## Real-layout observations
+## Material sources
 
-Handwriting, poor photographs, cropping, glare, and partial prior redaction are treated as risk conditions. Sources without independently verified patient authorization are labeled as controlled evaluation material rather than freely reusable data. Clear printed reports remain the strongest automated path; handwritten and incomplete documents remain review-first.
+| Material | Source and use |
+| --- | --- |
+| Modern CBC report | [MedOCR laboratory image](https://github.com/DeepLumiere/MedOCR/blob/9da1023b2c51079220ea1a0378ceadcf1ce8eb73/labimage.png); upstream repository is MIT, patient publication status is not independently verified |
+| Photographed handwritten prescription | [healthcare-ocr sample prescription](https://github.com/United-We-Care/healthcare-ocr/blob/a7a11f01f0f70b072e00ba4c3b4f0a13ad8e900f/ocr/sample_files/hw_prescription.jpg); original image rights and patient consent are not independently verified |
+| Structured patient register | Wellcome Collection [Register of patients](https://wellcomecollection.org/works/b9gymynv), CC BY 4.0 |
 
-## Material provenance
+Access dates, exact files, and SHA-256 fingerprints are recorded in the [evaluation image attribution](docs/assets/evaluation/NOTICE.md). Third-party evaluation materials are not covered by this project's MIT License.
 
-| Source ID | Material | Permission and use |
-| --- | --- | --- |
-| `SRC-CONTROLLED-EN-MEDOCR-CBC-001` | MedOCR modern CBC report with patient identity fields | Upstream repository is MIT; patient publication status is not independently verified |
-| `SRC-CONTROLLED-EN-HANDWRITTEN-RX-001` | healthcare-ocr photographed handwritten prescription | Upstream repository is MIT; original image rights and patient consent are not independently verified |
-| `SRC-PUBLIC-EN-REGISTER-1910-001` | Wellcome Collection structured patient register | CC BY 4.0; public result display and tracking permitted |
+## Community
 
-The MedOCR CBC is fixed to commit `9da1023b2c51079220ea1a0378ceadcf1ce8eb73`; its source and project-output SHA-256 values are `5dcff5590bfb6c5095db7fbe239eac9309d1670e147daeb8c9c266ce65e8bf39` and `a6b0781ebdc668b7e2b48473b7f369ba33cb860633deebefb8331601e24c39ee`. The photographed prescription is fixed to healthcare-ocr commit `a7a11f01f0f70b072e00ba4c3b4f0a13ad8e900f`; its source and output values are `c82e02d455321cd22ee34b7328e30a83012fcfe40f1be0dde7af7b91e0f2954a` and `c16ff6cf2e4ea0f0dc5bca75e76c11638e0c19e89e9e4e169cbc32e504c72811`. Both were accessed on August 22, 2026 and processed with policy version `2026-08-22.6`.
-
-The structured-register source and output SHA-256 values are `02942007c14ab77f58567f1ef93cb759860d5dd648017875a49fe78fb0dd3141` and `18c99d754b3910f7844fbab266d082e6a69835b6bf3e6aed1fe60473e5591718`. It was accessed on August 22, 2026 and processed with policy version `2026-08-22.4`.
-
-## Human review is required
-
-- Handwriting, signatures, stamps, or poor-quality photographs
-- Tilt, rotation, perspective distortion, glare, or partial obstruction
-- Faces, portraits, fingerprints, and other non-text identifiers
-- Barcodes or QR codes that may encode patient numbers
-- Cropped pages without enough field labels or context
-- Rare conditions, dates, and institutions that may identify someone in combination
-- Any result explicitly marked for review
-
-Before external release, inspect every page's text, image edges, barcodes, QR codes, filename, and metadata.
+[**LINUX DO — Chinese Developer Community**](https://linux.do/)
 
 ## License
 
