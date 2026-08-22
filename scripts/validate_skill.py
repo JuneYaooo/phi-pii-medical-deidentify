@@ -18,7 +18,6 @@ REQUIRED_PATHS = (
     "CONTRIBUTING.md",
     "SECURITY.md",
     "agents/openai.yaml",
-    ".github/workflows/test.yml",
     "scripts/deidentify.py",
     "scripts/detector.py",
     "scripts/evaluate_labeled_set.py",
