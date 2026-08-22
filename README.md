@@ -9,7 +9,7 @@
 
 English | [简体中文](README.zh-CN.md)
 
-This project is designed for laboratory sheets, pathology reports, examination reports, prescriptions, and other text- or table-heavy medical documents. It uses local text recognition to locate patient identity fields, creates a new copy with opaque black masks, and checks the result again. Originals remain unchanged, and real records do not need to be sent to a public recognition service.
+This is a local privacy-redaction Skill for laboratory sheets, pathology reports, examination reports, prescriptions, and other text- or table-heavy medical documents. Text recognition, privacy decisions, irreversible masking, and output checks can all run on the device or private network. Originals remain unchanged, and source images, OCR text, and patient information do not need to enter a public OCR service or cloud language model.
 
 > This project is not a privacy certification, legal advice, or a guarantee of complete anonymity. Every document requires a final human review before external release.
 
@@ -115,21 +115,26 @@ Preserved details can still create indirect identification risk when combined wi
 5. **Recheck with OCR**: inspect the processed page again, enlarge masks when identifiers remain, and route unresolved cases to human review.
 6. **Report review status**: describe categories handled and pages needing attention without repeating raw identifiers in ordinary reports.
 
-The current repository implementation combines local OCR, deterministic rules, and layout relationships; it does not claim to use a generative model. For stronger natural-language and contextual decisions, a locally hosted language model with 4B parameters or fewer can be added after OCR: OCR supplies text and coordinates, the small model decides which content is private, and the result is mapped back to image regions. Deterministic validation still handles identifiers with well-defined formats, such as phone numbers, identity numbers, and medical record numbers.
+OCR and a local small language model are not alternatives. They are consecutive parts of one privacy pipeline: OCR reads text and coordinates, a locally hosted language model with 4B parameters or fewer uses document context to decide what is private, deterministic rules validate well-defined identifiers, and the selected regions are mapped back to the source image for masking and another OCR check.
+
+The current Skill already implements local OCR, deterministic rules, layout analysis, irreversible masking, and a second OCR pass. The local language model is a recommended enhancement for complex names, addresses, organizations, and contextual decisions. When added, it should also run entirely on the device or private network; source images, complete OCR text, and patient fields should not be sent to a public language model.
 
 ## Local deployment recommendations
 
-| Use case | Suggested choice | Reason |
+Use these components together as one local pipeline rather than selecting only one:
+
+| Stage | Local component | Responsibility |
 | --- | --- | --- |
-| Clear printed Chinese documents | A small Chinese PaddleOCR model | Runs on ordinary computers with balanced speed and resource use |
-| Dense text, complex tables, and poor photographs | A medium Chinese PaddleOCR model | Usually provides steadier text and position recognition but runs more slowly |
-| Identity, phone, bank card, and business numbers | Format rules, validation rules, and field position | Decisions are explainable and unusual numbers are easier to flag |
-| Names, addresses, organizations, and complex context | A local language model with 4B parameters or fewer | Uses OCR context to decide what is private without requiring a separate BERT or RoBERTa entity model |
-| Handwriting, glare, and severe distortion | Human review as the primary safeguard | A small model should not issue an independent privacy pass |
+| Text and position reading | A small or medium PaddleOCR model | Use the small model for clear print and the medium model for dense text, complex tables, and poor photographs |
+| Contextual privacy decisions | A local language model with 4B parameters or fewer | Decide whether names, addresses, organizations, and contextual text should be removed |
+| Deterministic validation | Local format and checksum rules | Validate identity numbers, phones, bank cards, medical record numbers, and other structured identifiers |
+| Masking and recheck | Local masking plus a second OCR pass | Map decisions back to image coordinates, apply irreversible masks, and check for residual text |
+| High-risk safeguard | Local human review | Inspect handwriting, glare, severe distortion, QR codes, barcodes, and unresolved regions |
 
 Local workflows should also:
 
 - Store originals, recognition intermediates, and redacted copies separately with restricted access.
+- Do not send source images, complete OCR text, or patient fields to a public language model. When model reasoning is needed, call only a model hosted on the device or private network.
 - Keep raw identifiers out of ordinary audit records; store only category, position, reason, and a non-reversible fingerprint.
 - Handle barcodes and QR codes separately by masking them or decoding and assessing them locally.
 - Validate both required masking and required preservation on authorized real-world examples.
