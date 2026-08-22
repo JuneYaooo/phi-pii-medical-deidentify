@@ -337,6 +337,48 @@ def test_english_patient_register_masks_name_column_and_preserves_other_columns(
     assert [item["record_index"] for item in register_names] == [3]
 
 
+def test_english_cbc_header_masks_patient_identity_and_preserves_clinicians():
+    records = [
+        {"text": "Mr. Rajesh Varma", "box": [20, 10, 150, 28]},
+        {"text": "Age / Sex", "box": [20, 35, 75, 50]},
+        {"text": ": 26 YRS / M", "box": [85, 35, 160, 50]},
+        {"text": "Reg. no.", "box": [20, 60, 75, 75]},
+        {"text": ": 1028", "box": [85, 60, 130, 75]},
+        {"text": "Collected at : 123 MG Road, Pune 411001", "box": [20, 80, 300, 95]},
+        {"text": "HAEMATOLOGY", "box": [220, 105, 340, 125]},
+        {"text": "COMPLETE BLOOD COUNT (CBC)", "box": [180, 130, 400, 150]},
+        {"text": "Referred by: Dr. Aditya Thakur", "box": [20, 52, 220, 65]},
+        {"text": "Registered on: 03/03/2025", "box": [350, 35, 520, 50]},
+    ]
+
+    detections = detector.detect(records, image_size=(600, 700))
+    detected_indexes = {item["record_index"] for item in detections}
+
+    assert {0, 2, 4, 5}.issubset(detected_indexes)
+    assert 8 not in detected_indexes
+    assert 9 not in detected_indexes
+
+
+def test_english_prescription_masks_inline_patient_fields_only():
+    records = [
+        {"text": "Name: ASHVIKA", "box": [20, 80, 140, 100]},
+        {"text": "Age, Gender: 4 yrs / F", "box": [20, 105, 180, 125]},
+        {"text": "Clinical Description:", "box": [20, 145, 170, 165]},
+        {"text": "Advice:", "box": [20, 200, 80, 220]},
+        {"text": "Syp CALPOL 4 ml", "box": [30, 230, 180, 250]},
+        {"text": "Dr. Nirmal Narayanan", "box": [20, 20, 180, 40]},
+        {"text": "Reg. No.: 52547", "box": [200, 40, 320, 60]},
+    ]
+
+    detections = detector.detect(records, image_size=(400, 400))
+    detected_indexes = {item["record_index"] for item in detections}
+
+    assert {0, 1}.issubset(detected_indexes)
+    assert 4 not in detected_indexes
+    assert 5 not in detected_indexes
+    assert 6 not in detected_indexes
+
+
 def test_source_name_terms_only_uses_strong_filename_or_directory_hints(tmp_path):
     root = tmp_path / "materials"
     source = root / "张三" / "张三住院病历.png"

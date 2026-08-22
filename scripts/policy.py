@@ -13,6 +13,9 @@ STRUCTURED_SOURCES = {
     "masked-id-card-value",
     "masked-id-card-row",
     "patient-card-name",
+    "english-medical-identity",
+    "english-medical-header-name",
+    "english-medical-split-row",
     "english-patient-register-column",
 }
 

@@ -1,16 +1,18 @@
 # Evaluation image attribution
 
-The source image is `MINI/uploaded_image.png` from ReportSenseAI at commit `fe7e800f607c873717b72072018faf36bb83ec77`:
+Evaluation source images are third-party materials. They are not covered by this repository's MIT License unless an entry explicitly states otherwise; downstream users must follow the original source terms and independently assess patient authorization.
 
-https://github.com/MEDHANGSHI0708/ReportSenseAI/blob/fe7e800f607c873717b72072018faf36bb83ec77/MINI/uploaded_image.png
+The modern English CBC image is `labimage.png` from MedOCR at commit `9da1023b2c51079220ea1a0378ceadcf1ce8eb73`:
 
-ReportSenseAI is distributed under the MIT License, copyright (c) 2025 MEDHANGSHI0708.
+https://github.com/DeepLumiere/MedOCR/blob/9da1023b2c51079220ea1a0378ceadcf1ce8eb73/labimage.png
 
-The identity values and institution shown in the report come from the GNU Health demo database, which GNU Health documents as academic and training data:
+MedOCR is distributed under the MIT License. The image contains a visible patient name, age, sex, registration number, street address, barcode, and QR code. The upstream repository does not independently document patient consent or publication status. The local before image is `english-modern-cbc-before.png`; `english-modern-cbc-after.png` is actual project output. Source ID: `SRC-CONTROLLED-EN-MEDOCR-CBC-001`.
 
-https://docs.gnuhealth.org/his/userguide/demodb.html
+The photographed English handwritten prescription is `ocr/sample_files/hw_prescription.jpg` from healthcare-ocr at commit `a7a11f01f0f70b072e00ba4c3b4f0a13ad8e900f`:
 
-The after image is the actual output produced by this project. Source ID: `SRC-PUBLIC-CBC-001`.
+https://github.com/United-We-Care/healthcare-ocr/blob/a7a11f01f0f70b072e00ba4c3b4f0a13ad8e900f/ocr/sample_files/hw_prescription.jpg
+
+healthcare-ocr is distributed under the MIT License. The image contains a visible patient name, age, and sex and credits an earlier Facebook post in the image itself. The repository does not independently establish original image rights or patient consent. The local before image is `english-handwritten-prescription-before.webp`; `english-handwritten-prescription-after.webp` is actual project output. Source ID: `SRC-CONTROLLED-EN-HANDWRITTEN-RX-001`.
 
 The Chinese occupational-report images are based on `vx_images/206350912225539.jpg` from healthyCheckUi at commit `c6b50346993f7e8debdc567e3469b8fa74eaaafb`:
 

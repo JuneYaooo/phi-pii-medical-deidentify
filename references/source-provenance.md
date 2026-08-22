@@ -18,9 +18,12 @@ Each record should include:
 - OCR model, policy version, redaction rounds, and result counts.
 
 The committed README may cite the source ID, publisher, discovery method,
-access date, and risk status. Do not commit direct links to identifiable patient
-material, original images, OCR text, or raw identifiers unless there is explicit
-authorization and an approved data-handling process.
+access date, and risk status. Identifiable source images may be committed only
+when the maintainer deliberately designates them as controlled evaluation
+material, records exact provenance and authorization status, and excludes them
+from the repository license. This does not establish patient consent or grant
+downstream reuse rights. OCR text and raw identifiers should not be copied into
+ordinary reports.
 
 Example public citation:
 
@@ -33,18 +36,33 @@ Authorization: verified educational sample
 Exact provenance: protected local manifest
 ```
 
-## Public laboratory-report evaluation asset
+## Modern English CBC evaluation asset
 
-- Source ID: `SRC-PUBLIC-CBC-001`
-- Document type: complete blood count laboratory report with demo identity fields
-- Upstream project: ReportSenseAI
-- Upstream file: https://github.com/MEDHANGSHI0708/ReportSenseAI/blob/fe7e800f607c873717b72072018faf36bb83ec77/MINI/uploaded_image.png
+- Source ID: `SRC-CONTROLLED-EN-MEDOCR-CBC-001`
+- Document type: modern complete blood count report with visible patient identity fields
+- Upstream project: MedOCR
+- Upstream file: https://github.com/DeepLumiere/MedOCR/blob/9da1023b2c51079220ea1a0378ceadcf1ce8eb73/labimage.png
 - Upstream license: MIT
-- Demo-data documentation: https://docs.gnuhealth.org/his/userguide/demodb.html
+- Patient authorization: not independently documented by the upstream repository
 - Accessed: 2026-08-22
-- Original SHA-256: `700648e4c367ac42a84f3c48123c3daf1aa85114b984aab7752cf4be1523ebb3`
-- Redacted SHA-256: `379dff3994538c5aa155c988a71ca0649e4a56f349a866688914c287aa3bbda2`
-- Result: demo patient name, patient ID, age, sex, and repeated test ID covered; zero residual detections; 18 CBC rows and clinician information preserved.
+- Original SHA-256: `5dcff5590bfb6c5095db7fbe239eac9309d1670e147daeb8c9c266ce65e8bf39`
+- Redacted SHA-256: `a6b0781ebdc668b7e2b48473b7f369ba33cb860633deebefb8331601e24c39ee`
+- Policy version: `2026-08-22.6`
+- Result: four text masks covered the patient name, age and sex, registration number, and address; zero OCR residual detections for matched fields; the age mask slightly overlaps the referring-doctor line; barcode and QR code remain visible; human review required.
+
+## Photographed English handwritten-prescription evaluation asset
+
+- Source ID: `SRC-CONTROLLED-EN-HANDWRITTEN-RX-001`
+- Document type: phone photograph of a handwritten prescription with visible patient identity fields
+- Upstream project: healthcare-ocr
+- Upstream file: https://github.com/United-We-Care/healthcare-ocr/blob/a7a11f01f0f70b072e00ba4c3b4f0a13ad8e900f/ocr/sample_files/hw_prescription.jpg
+- Upstream license: MIT
+- Original image authorization: not independently documented; the image itself credits an earlier Facebook post
+- Accessed: 2026-08-22
+- Original SHA-256: `c82e02d455321cd22ee34b7328e30a83012fcfe40f1be0dde7af7b91e0f2954a`
+- Redacted SHA-256: `c16ff6cf2e4ea0f0dc5bca75e76c11638e0c19e89e9e4e169cbc32e504c72811`
+- Policy version: `2026-08-22.6`
+- Result: three masks across the patient name and age/sex fields; zero OCR residual detections for matched fields; medicines, doses, date, weight, and clinician information preserved; irregular handwriting geometry requires human review.
 
 ## Public Chinese occupational-report evaluation asset
 

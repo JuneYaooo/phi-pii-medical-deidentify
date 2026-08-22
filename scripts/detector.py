@@ -626,24 +626,104 @@ def english_medical_identity_detections(records, rows, image_size):
         if rect_center(record["box"])[1] <= header_limit
     ]
     header_text = " ".join(record["text"] for _, record in header_records).upper()
+    page_text = " ".join(record["text"] for record in records).upper()
     report_anchor = any(
         title in header_text
-        for title in ("LABORATORY REPORT", "LAB REPORT", "PATHOLOGY REPORT", "MEDICAL REPORT")
+        for title in (
+            "LABORATORY REPORT", "LAB REPORT", "PATHOLOGY REPORT", "MEDICAL REPORT",
+            "COMPLETE BLOOD COUNT", "HAEMATOLOGY",
+        )
+    )
+    prescription_anchor = (
+        "CLINICAL DESCRIPTION" in page_text
+        and ("ADVICE" in page_text or "PRESCRIPTION" in page_text)
     )
     identity_anchors = sum(
         bool(re.search(pattern, header_text))
-        for pattern in (r"\bNAME\b", r"\bPATIENT\s*ID\b", r"\bAGE\b", r"\bSEX\b", r"\bTEST\s*ID\b")
+        for pattern in (
+            r"\bNAME\b", r"\bPATIENT\s*ID\b", r"\bAGE\b", r"\bSEX\b",
+            r"\bGENDER\b", r"\bTEST\s*ID\b", r"\bREG(?:ISTRATION)?\.?\s*(?:NO|NUMBER)\b",
+        )
     )
-    if not report_anchor or identity_anchors < 3:
+    if not (report_anchor or prescription_anchor) or identity_anchors < 2:
         return []
 
     hits = []
     for index, record in header_records:
         text = record["text"].strip()
-        for entity, label in (("AGE", "Age"), ("SEX", "Sex")):
-            match = re.match(rf"{label}\s*[:：]?\s*(.+)", text, re.IGNORECASE)
-            if match:
-                hits.append(make_detection(entity, "english-medical-identity", index, text, record["box"], match.span(1)))
+        name_match = re.match(
+            r"(?:Patient\s+)?Name\s*[:：]\s*([A-Za-z][A-Za-z .,'\-]{1,60})",
+            text,
+            re.IGNORECASE,
+        )
+        if name_match:
+            hits.append(make_detection(
+                "NAME", "english-medical-identity", index, text, record["box"], name_match.span(1)
+            ))
+        age_sex_match = re.match(
+            r"Age\s*(?:/|,|and)\s*(?:Sex|Gender)\s*[:：]?\s*(.+)",
+            text,
+            re.IGNORECASE,
+        )
+        if not age_sex_match:
+            age_sex_match = re.match(r"Age\s*[:：]?\s*(\d.{0,25})", text, re.IGNORECASE)
+        if age_sex_match:
+            hits.append(make_detection(
+                "AGE_SEX", "english-medical-identity", index, text, record["box"], age_sex_match.span(1)
+            ))
+        sex_match = re.match(r"(?:Sex|Gender)\s*[:：]?\s*(.+)", text, re.IGNORECASE)
+        if sex_match:
+            hits.append(make_detection(
+                "SEX", "english-medical-identity", index, text, record["box"], sex_match.span(1)
+            ))
+        if report_anchor:
+            registration_match = re.match(
+                r"Reg(?:istration)?\.?\s*(?:No|Number)\.?\s*[:：]\s*([A-Za-z0-9][A-Za-z0-9./_\-]{1,30})",
+                text,
+                re.IGNORECASE,
+            )
+            if registration_match:
+                hits.append(make_detection(
+                    "MEDICAL_ID", "english-medical-identity", index, text, record["box"], registration_match.span(1)
+                ))
+        address_match = re.match(
+            r"(?:Patient\s+Address|Address|Collected\s+at)\s*[:：]\s*(.{4,100})",
+            text,
+            re.IGNORECASE,
+        )
+        if address_match:
+            hits.append(make_detection(
+                "ADDRESS", "english-medical-identity", index, text, record["box"], address_match.span(1)
+            ))
+
+        # Some reports print the patient name alone above the demographic labels.
+        honorific_name = re.fullmatch(
+            r"(?:Mr|Mrs|Ms|Miss|Master)\.?\s+[A-Za-z][A-Za-z .,'\-]{1,60}",
+            text,
+            re.IGNORECASE,
+        )
+        if honorific_name and rect_center(record["box"])[1] <= height * 0.15:
+            hits.append(make_detection(
+                "NAME", "english-medical-header-name", index, text, record["box"]
+            ))
+
+    for row in rows:
+        for segment in row_item_segments(row):
+            text, mapping = virtual_row(segment)
+            patterns = [
+                ("AGE_SEX", r"Age\s*(?:/|,|and)\s*(?:Sex|Gender)\s*[:：]?\s*([^:]{1,30})"),
+            ]
+            if report_anchor:
+                patterns.append((
+                    "MEDICAL_ID",
+                    r"Reg(?:istration)?\.?\s*(?:No|Number)\.?\s*[:：]\s*([A-Za-z0-9][A-Za-z0-9./_\-]{1,30})",
+                ))
+            for entity, pattern in patterns:
+                match = re.search(pattern, text, re.IGNORECASE)
+                if match:
+                    hits.extend(mapped_match(
+                        records, mapping, match.span(1), entity, "english-medical-split-row"
+                    ))
 
     name_label_indexes = {
         index for index, record in header_records
