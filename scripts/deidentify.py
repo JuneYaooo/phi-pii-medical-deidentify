@@ -595,7 +595,7 @@ def run(args):
 
 
 def build_parser():
-    parser = argparse.ArgumentParser(description="Redact Chinese medical-record materials with local OCR.")
+    parser = argparse.ArgumentParser(description="De-identify medical documents with local OCR and irreversible masking.")
     parser.add_argument("--input", required=True)
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--resume-run")

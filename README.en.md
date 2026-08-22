@@ -1,4 +1,4 @@
-# Medical Record Privacy Redaction
+# Medical Document De-identification
 
 **Identify and cover patient information locally while preserving useful diagnoses, laboratory results, and treatment details.**
 

@@ -1,6 +1,6 @@
 ---
 name: phi-pii-medical-deidentify
-description: Local PHI and PII de-identification and irreversible redaction for Chinese medical records and sensitive healthcare documents. Use for privacy masking, anonymization, HIPAA-oriented data preparation, export review, or residual-identifier checks across images, screenshots, scans, PDFs, DOCX, XLSX, TXT, Markdown, JSON, CSV, and OCR output.
+description: Local medical document de-identification with OCR, configurable privacy detection, irreversible masking, and residual checks. Use for removing patient identifiers from images, screenshots, scans, PDFs, DOCX, XLSX, TXT, Markdown, JSON, CSV, and OCR output before sharing or further processing.
 ---
 
 # 病历材料去隐私化

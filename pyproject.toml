@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "phi-pii-medical-deidentify"
 version = "0.1.0"
-description = "Standalone local PHI and PII de-identification for Chinese medical-record materials"
+description = "Local medical document de-identification with OCR and irreversible masking"
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.10"
-keywords = ["phi", "pii", "hipaa", "medical-records", "de-identification", "ocr", "agent-skill"]
+keywords = ["phi", "pii", "medical-documents", "medical-records", "de-identification", "ocr", "agent-skill"]
 dependencies = [
   "Pillow>=11.0,<13",
   "pillow-heif>=0.15.0,<1",
