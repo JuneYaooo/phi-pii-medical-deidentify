@@ -26,6 +26,32 @@ https://iiif.wellcomecollection.org/presentation/v2/b19581841
 
 The image is licensed CC BY-NC 4.0 and credited to Wellcome Collection. The page contains handwritten patient names, ages, addresses, and diseases. The after image is actual project output: no automatic mask was applied, those fields remain visible, and low-confidence handwriting routed the page to mandatory human review. Source ID: `SRC-PUBLIC-EN-HANDWRITING-002`.
 
+The controlled Chinese sources supplied through image-search links are not redistributed as original files because their pages do not clearly grant image-republication rights. The repository stores only project-generated outputs and links back to the exact source URLs.
+
+Source ID `SRC-CONTROLLED-CN-PUMCH-LAB-001` is the Beijing Union Medical College Hospital report-query image:
+
+https://www.pumch.cn/reportquery.html
+
+https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png
+
+The original contains a patient name and partially masked order number. The project output is stored as `chinese-pumch-lab-after.png`; it masks the name and order number but requires human review because a department field is overmasked.
+
+Source ID `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001` is the folded photographed report used on TextIn's medical-report example page:
+
+https://www.textin.com/tasks/medical-report-extraction
+
+https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg
+
+The original contains MR number, age, inpatient and bed numbers, and a QR code. The project output is stored as `chinese-textin-folded-report-after.jpg`; identifiers are covered, while the QR code and fold distortion require human review.
+
+Source ID `SRC-CONTROLLED-CN-YANGTSE-001` is the already-edited laboratory photograph from Yangtse Evening News:
+
+https://m.yangtse.com/news_details.html?id=4308066
+
+https://imgcdn.yzwb.net/181_1738735693000.jpg?imageMogr2/thumbnail/1080x%3E/strip/ignore-error/1%7Cimageslim
+
+The source already hides identity fields and contains editorial arrows and boxes. It is recorded as an excluded candidate, not as a privacy-recall result.
+
 The 1910 patient-register image comes from Wellcome Collection work `b9gymynv`, volume `b21892830`, page `b21892830_HB13_6_29_0006.JP2`:
 
 https://wellcomecollection.org/works/b9gymynv

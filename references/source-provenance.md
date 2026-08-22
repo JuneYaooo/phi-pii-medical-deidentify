@@ -131,3 +131,42 @@ Exact provenance: protected local manifest
 - Project output SHA-256: `757d26d173d0f8857e734f5d54e3415e6471c1f7d87be56e7dd66d7faa2c660b`
 - Policy version: `2026-08-22.4`
 - Result: one unrelated text box masked, 270-degree rotation, patient name still visible, and mandatory human review; this is a failure case, not a privacy pass.
+
+## Controlled Chinese image-search evaluation sources
+
+- Source ID: `SRC-CONTROLLED-CN-PUMCH-LAB-001`
+- Document type: Chinese laboratory report screenshot
+- Publisher: Peking Union Medical College Hospital report-query site
+- Landing page: https://www.pumch.cn/reportquery.html
+- Exact image: https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png
+- Accessed: 2026-08-22
+- Authorization: source page does not clearly grant image redistribution; original is not committed
+- Direct identifiers visible: patient name and partially masked order number
+- Original SHA-256: `bc990c967a9fec9e7aafc86b1c7aa5e08adcfeba35e0d3093fa3ce71e3cf4547`
+- Project output SHA-256: `fea8b59940b045445052d098b19f3a1a7eae73e2a6b18d82a8be0b6a6536f695`
+- Policy version: `2026-08-22.5`
+- Result: four masks; name and order number covered; department overmasked; zero OCR residual detections; manual review required.
+
+- Source ID: `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001`
+- Document type: folded and photographed Chinese MR examination report
+- Publisher: TextIn medical-report extraction example
+- Landing page: https://www.textin.com/tasks/medical-report-extraction
+- Exact image: https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg
+- Accessed: 2026-08-22
+- Authorization: source page does not clearly grant image redistribution; original is not committed
+- Direct identifiers visible: MR number, age, inpatient number, bed number, QR code; name field blank
+- Original SHA-256: `817ee7f7181a545b083bc47e06b374cad115a7bc3fab0b2bd135350e62f0d80d`
+- Project output SHA-256: `7fad0bd5f67d3a1f5b5fb0a7f86c251b7871ffe36fe9a8a48551d1cfbc5c34ce`
+- Policy version: `2026-08-22.5`
+- Result: seven masks; identifiers covered; QR code remains; layout irregularity requires manual review; not a name-recall test.
+
+- Source ID: `SRC-CONTROLLED-CN-YANGTSE-001`
+- Document type: photographed Chinese laboratory report already edited by the publisher
+- Publisher: Yangtse Evening News
+- Landing page: https://m.yangtse.com/news_details.html?id=4308066
+- Exact image: https://imgcdn.yzwb.net/181_1738735693000.jpg?imageMogr2/thumbnail/1080x%3E/strip/ignore-error/1%7Cimageslim
+- Accessed: 2026-08-22
+- Authorization: source page does not clearly grant image redistribution; original is not committed
+- Direct identifiers visible: identity fields already obscured by the publisher
+- Original SHA-256: `d47503a271f9d5c65cb8334e5bc1b8d737b988f3e0b576e1e1dbf6e5f4de6d69`
+- Result: excluded from effectiveness claims; project produced 14 masks and visibly overmasked clinical results and reference ranges; it cannot measure identity recall because the source is pre-redacted.

@@ -25,7 +25,7 @@ LABELS = {
         "Hospital No", "HospitalNo", "住院 No", "住院No",
         "X光号", "X线号", "检查编号", "检验流水号", "报告流水号", "流水号",
         "收费票据号码", "收费票据号", "电子票据号码", "电子票据号", "发票号码", "发票号", "结算单号",
-        "Test ID", "Test Id", "Test id",
+        "Test ID", "Test Id", "Test id", "病人ID号", "患者ID号",
         "Accession Number", "AccNum", "摄片编号", "摄片号", "GCP编号", "GCP号", "床号",
     ),
 }
@@ -236,6 +236,11 @@ def direct_detections(records):
     hits = []
     for index, record in enumerate(records):
         text = record["text"]
+        order_number = re.match(r"^\s*单号\s*[：:]\s*([A-Za-z0-9*＊][A-Za-z0-9*＊\s./_-]{1,})", text)
+        if order_number:
+            hits.append(make_detection(
+                "MEDICAL_ID", "medical-report-order-number", index, text, record["box"], order_number.span(1)
+            ))
         for match in PHONE_RE.finditer(re.sub(r"[\s\-]", "", text)):
             compact = re.sub(r"[\s\-]", "", text)
             if compact == text:

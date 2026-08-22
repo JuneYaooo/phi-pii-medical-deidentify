@@ -42,6 +42,46 @@
 
 素材来自 Apache-2.0 项目 [BloodTestReportOCR 的固定版本测试图](https://github.com/csxiaoyaojianxian/BloodTestReportOCR/blob/95d058e4999806fa50bbcf6d10fe8a0af5746759/BloodTestReportOCR/origin_pics/bloodtestreport2.jpg)，来源编号为 `SRC-OPEN-CBC-UNVERIFIED-001`。由于患者公开授权无法核实，仓库不复制带身份信息的原图，也不把该案例包装成可自由传播的公开演示。
 
+### 标准电子报告：北京协和医院检验单
+
+这是你提供的北京协和医院检验报告截图。原图中可见患者姓名、部分单号、申请科室、申请医生和审核医生。项目实际输出遮挡了患者姓名和单号，检验项目与结果仍然可读；人工检查发现申请科室被一并遮挡，因此不是“零误遮挡”的通过案例。
+
+| 处理前 | 本项目处理后 |
+| --- | --- |
+| [![处理前：协和检验报告中可见姓名和部分单号](https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png)](https://www.pumch.cn/reportquery.html) | ![处理后：姓名和单号被遮挡，检验结果保留](docs/assets/evaluation/chinese-pumch-lab-after.png) |
+
+| 评估项 | 实际结果 |
+| --- | --- |
+| 自动遮挡 | 4 处，包含姓名、单号和身份信息行 |
+| 处理后残留 | 二次 OCR 未检出规则命中的身份字段 |
+| 人工对照 | 姓名和单号已覆盖；申请科室被误遮；医生姓名保留 |
+| 最终状态 | 必须人工复核，不能直接对外发布 |
+
+来源页面是 [北京协和医院报告查询](https://www.pumch.cn/reportquery.html)，原始图片地址固定为上面的 PNG 链接。该站点没有在图片附近明确授予再发布许可，仓库只提交项目输出，不把原图复制为 MIT 项目资产。来源编号为 `SRC-CONTROLLED-CN-PUMCH-LAB-001`。原图 SHA-256 为 `bc990c967a9fec9e7aafc86b1c7aa5e08adcfeba35e0d3093fa3ce71e3cf4547`，项目输出 SHA-256 为 `fea8b59940b045445052d098b19f3a1a7eae73e2a6b18d82a8be0b6a6536f695`。
+
+### 手机拍照并有明显折痕：MR 检查报告单
+
+这张 TextIn 医疗报告示例是手机拍摄的折痕文字报告单，不是 MR 影像。它包含 MR 号、病人 ID 栏、年龄、住院号、床号和二维码。姓名栏本身已经为空，因此它不能评价姓名召回，但适合测试折痕、反光、编号和二维码风险。项目遮挡了 MR 号、年龄、住院号、床号等字段，保留了检查所见和影像意见；二维码仍保留，必须人工确认是否需要单独处理。
+
+| 处理前 | 本项目处理后 |
+| --- | --- |
+| [![处理前：折痕检查报告含 MR 号、年龄、住院号和床号](https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg)](https://www.textin.com/tasks/medical-report-extraction) | ![处理后：报告编号和身份字段被遮挡，折痕区域仍需人工检查](docs/assets/evaluation/chinese-textin-folded-report-after.jpg) |
+
+| 评估项 | 实际结果 |
+| --- | --- |
+| 自动遮挡 | 7 处，包含 MR 号、年龄、住院号和床号相关区域 |
+| 处理后残留 | 二次 OCR 未检出规则命中的字段 |
+| 人工对照 | 折痕和二维码仍需检查，部分身份行遮挡范围偏宽 |
+| 最终状态 | 触发版面异常人工复核，不可自动发布 |
+
+素材来自 TextIn 的 [医疗报告抽取示例页](https://www.textin.com/tasks/medical-report-extraction)，原始图片地址固定为上面的 JPG 链接。页面未明确授予图片再发布许可，仓库只提交项目输出。来源编号为 `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001`。原图 SHA-256 为 `817ee7f7181a545b083bc47e06b374cad115a7bc3fab0b2bd135350e62f0d80d`，项目输出 SHA-256 为 `7fad0bd5f67d3a1f5b5fb0a7f86c251b7871ffe36fe9a8a48551d1cfbc5c34ce`。
+
+### 候选素材评估：扬子晚报拍照检验单
+
+你提供的扬子晚报图片已经由原发布方用箭头、方框和模糊处理遮住了姓名、就诊卡号、住院号等身份字段，因此不适合作为“原始隐私信息召回”案例。项目在这张图上仍产生 14 处遮挡，人工查看发现检验结果、参考范围和正文也被大面积误遮。它只说明“已经被处理过的公开图片不能直接当作测试集”，不纳入效果展示。
+
+来源编号为 `SRC-CONTROLLED-CN-YANGTSE-001`。原始图片地址为你提供的 [imgcdn.yzwb.net 图片链接](https://imgcdn.yzwb.net/181_1738735693000.jpg?imageMogr2/thumbnail/1080x%3E/strip/ignore-error/1%7Cimageslim)，来源页面为 [扬子晚报新闻页](https://m.yangtse.com/news_details.html?id=4308066)。原图 SHA-256 为 `d47503a271f9d5c65cb8334e5bc1b8d737b988f3e0b576e1e1dbf6e5f4de6d69`；由于原图已经预先打码，不能据此宣称姓名去除率。
+
 ### 中文手写案例：暂不冒充有效测评
 
 此前展示的中文手写处方没有患者姓名、就诊号、电话或地址，无法验证隐私字段能否被遮挡，因此已从效果案例中撤下。它最多只能测试 OCR 是否会误遮药名，不能回答“手写患者信息是否被去除”。
@@ -140,6 +180,9 @@
 | `SRC-PUBLIC-CN-OCCUPATIONAL-001` | healthyCheckUi 中文职业健康检查表 | LGPL-3.0，上游允许学习和教学案例，可公开展示和追踪 |
 | `SRC-OPEN-CBC-UNVERIFIED-001` | BloodTestReportOCR 中文血常规拍照件 | 项目为 Apache-2.0，但患者授权无法核实，仅限受控评测 |
 | `SRC-REAL-PATHOLOGY-001` | 公开网页中的中文病理报告照片 | 转载和患者授权无法核实，仅限隔离评测 |
+| `SRC-CONTROLLED-CN-PUMCH-LAB-001` | 北京协和医院检验报告截图 | 原站未明确授予图片再发布许可，仅保留项目输出和来源链接 |
+| `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001` | TextIn 折痕 MR 检查报告示例 | 页面未明确授予图片再发布许可，仅保留项目输出和来源链接 |
+| `SRC-CONTROLLED-CN-YANGTSE-001` | 扬子晚报预先打码的拍照检验单 | 原图已有编辑遮挡且项目误遮明显，只作候选素材排除记录 |
 
 公开职业健康检查表固定在 healthyCheckUi 提交 `c6b50346993f7e8debdc567e3469b8fa74eaaafb`，获取日期为 2026 年 8 月 22 日。仓库内处理前文件指纹为 `92a716af0c62ede83854b09e775cfa99eaddfa962558cc7da363e3482bb3ea33`，处理后文件指纹为 `34ca89dc781aeebd70127282c379bcc06f9d3c33698756292a1cc150e4c38db1`。
 

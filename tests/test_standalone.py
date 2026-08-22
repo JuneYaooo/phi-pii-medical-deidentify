@@ -38,6 +38,14 @@ def test_text_rules_mask_identity_and_preserve_clinical_text():
     assert "高血压" in redacted
 
 
+def test_medical_report_order_number_is_masked_even_when_partially_obscured():
+    records = [{"text": "单号：202 ***** 281", "box": [10, 10, 250, 40]}]
+
+    detections = detector.detect(records, image_size=(300, 200))
+
+    assert any(item["entity"] == "MEDICAL_ID" for item in detections)
+
+
 def test_unlabeled_text_bank_card_requires_luhn():
     redacted, detections, residuals = redact_native_text(
         "付款号 6222020202020202026；订单号 6222020202020202027"
