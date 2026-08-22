@@ -174,7 +174,7 @@ Preserved details can still create indirect identification risk when combined wi
 5. **Recheck with OCR**: inspect the processed page again, enlarge masks when identifiers remain, and route unresolved cases to human review.
 6. **Report review status**: describe categories handled and pages needing attention without repeating raw identifiers in ordinary reports.
 
-The default approach combines local OCR, deterministic rules, and layout relationships. It does not depend on a generative large language model. This keeps decisions easier to explain and allows medical-field policies to be refined deliberately.
+The current repository implementation combines local OCR, deterministic rules, and layout relationships; it does not claim to use a generative model. For stronger natural-language and contextual decisions, a locally hosted language model with 4B parameters or fewer can be added after OCR: OCR supplies text and coordinates, the small model decides which content is private, and the result is mapped back to image regions. Deterministic validation still handles identifiers with well-defined formats, such as phone numbers, identity numbers, and medical record numbers.
 
 ## Local deployment recommendations
 
@@ -183,7 +183,7 @@ The default approach combines local OCR, deterministic rules, and layout relatio
 | Clear printed Chinese documents | A small Chinese PaddleOCR model | Runs on ordinary computers with balanced speed and resource use |
 | Dense text, complex tables, and poor photographs | A medium Chinese PaddleOCR model | Usually provides steadier text and position recognition but runs more slowly |
 | Identity, phone, bank card, and business numbers | Format rules, validation rules, and field position | Decisions are explainable and unusual numbers are easier to flag |
-| Natural-language names, addresses, and organizations | A lightweight Chinese BERT or RoBERTa entity model | Optional enhancement for expressions that fixed rules do not cover well |
+| Names, addresses, organizations, and complex context | A local language model with 4B parameters or fewer | Uses OCR context to decide what is private without requiring a separate BERT or RoBERTa entity model |
 | Handwriting, glare, and severe distortion | Human review as the primary safeguard | A small model should not issue an independent privacy pass |
 
 Local workflows should also:
