@@ -104,6 +104,33 @@ def _unstructured_low_confidence_review(records, image_size, threshold=0.75, min
     }
 
 
+def _english_patient_register_review(records, image_size):
+    text = " ".join(str(record.get("text") or "") for record in records).upper()
+    name_anchor = any(anchor in text for anchor in (
+        "NAME OF PATIENT",
+        "PATIENT NAME",
+        "CHRISTIAN AND SURNAME",
+    ))
+    register_context = "REGISTER" in text or any(anchor in text for anchor in (
+        "DATE OF ADMISSION",
+        "DATE OF DISCHARGE",
+        "PLACE OF ABODE",
+        "PREVIOUS OCCUPATION",
+    ))
+    if not name_anchor or not register_context:
+        return None
+    width, height = image_size
+    fingerprint = f"english-patient-register:{width}x{height}"
+    return {
+        "status": "needs_manual_review",
+        "entity": "NAME",
+        "source": "document-structure",
+        "box": [0, 0, width, height],
+        "reason": "english_patient_register_requires_review",
+        "finding_hash": hashlib.sha256(fingerprint.encode("utf-8")).hexdigest()[:16],
+    }
+
+
 def _irregular_text_geometry_review(records, image_size, threshold=0.35):
     heights = [
         max(1.0, float(record["box"][3]) - float(record["box"][1]))
@@ -226,6 +253,9 @@ def redact_image(image, ocr, source_terms=(), max_rounds=2, padding=8, auto_rota
             unstructured_confidence = _unstructured_low_confidence_review(records, current.size)
             if unstructured_confidence:
                 manual_review.append(unstructured_confidence)
+            patient_register = _english_patient_register_review(records, current.size)
+            if patient_register:
+                manual_review.append(patient_register)
             irregular_geometry = _irregular_text_geometry_review(records, current.size)
             if irregular_geometry:
                 manual_review.append(irregular_geometry)

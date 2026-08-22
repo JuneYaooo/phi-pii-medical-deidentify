@@ -660,6 +660,41 @@ def english_medical_identity_detections(records, rows, image_size):
     return hits
 
 
+def english_patient_register_name_detections(records, image_size):
+    if not image_size:
+        return []
+    page_text = " ".join(record["text"] for record in records).upper()
+    if "REGISTER" not in page_text and "DATE OF ADMISSION" not in page_text:
+        return []
+    anchors = [
+        record for record in records
+        if any(label in record["text"].upper() for label in (
+            "NAME OF PATIENT",
+            "PATIENT NAME",
+            "CHRISTIAN AND SURNAME",
+        ))
+    ]
+    hits = []
+    for anchor in anchors:
+        anchor_width = max(1.0, anchor["box"][2] - anchor["box"][0])
+        anchor_center = (anchor["box"][0] + anchor["box"][2]) / 2
+        left = anchor_center - anchor_width * 0.9
+        right = anchor_center + anchor_width * 0.9
+        for index, record in enumerate(records):
+            if record is anchor or record["box"][1] <= anchor["box"][3]:
+                continue
+            record_center = (record["box"][0] + record["box"][2]) / 2
+            if not left <= record_center <= right:
+                continue
+            text = record["text"].strip()
+            if not re.search(r"[A-Za-z]", text) or len(text) > 80:
+                continue
+            hits.append(make_detection(
+                "NAME", "english-patient-register-column", index, text, record["box"]
+            ))
+    return hits
+
+
 def identity_row_detections(records, rows, image_size):
     hits = []
     height_limit = image_size[1] * 0.35 if image_size else float("inf")
@@ -920,6 +955,7 @@ def detect(records, image_size=None, source_terms=()):
     detections.extend(source_term_detections(records, source_terms))
     detections.extend(peripheral_ui_identity_detections(records, image_size))
     detections.extend(english_medical_identity_detections(records, rows, image_size))
+    detections.extend(english_patient_register_name_detections(records, image_size))
     detections.extend(header_identifier_detections(records, rows, image_size))
     detections.extend(identity_row_detections(records, rows, image_size))
     detections.extend(contact_identity_row_detections(rows))

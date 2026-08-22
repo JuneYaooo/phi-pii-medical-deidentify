@@ -38,7 +38,7 @@ The English page uses English-language medical evidence only. Every showcased ca
 | --- | --- | --- |
 | Standard scan or digital report | GNU Health demo CBC shown above | 9 masks, zero OCR residual detections, 18 CBC rows preserved |
 | Photographed document | CC BY 4.0 photograph of an English prescription envelope | Zero masks; the upside-down handwritten patient name remained visible; routed to review |
-| Handwritten document | 1890 Hong Kong Hospital patient register with names, ages, addresses, and diseases | Zero masks; the patient information remained visible; routed to review |
+| Handwritten document | Four historical patient registers and case-note pages with names, ages, addresses, dates, occupations, or diseases | Results range from 40 name masks to complete misses; every page remains review-only |
 
 The photographed and handwritten rows intentionally report failures rather than inflate the success rate. A repository license or a search-result page does not prove that a modern patient consented to republication. Modern patient photographs will only be promoted to public evidence after the source, license, demo or patient status, project output, and manual comparison can all be tracked.
 
@@ -76,6 +76,61 @@ This 1890 Hong Kong Hospital register is a genuine handwritten medical record wi
 | Final status | Mandatory human review; do not release automatically |
 
 The source is Wellcome Collection record [Register of Patients in the Hong Kong Hospital](https://wellcomecollection.org/works/rj3pbbjd), dated 1890 and licensed CC BY-NC 4.0 with credit to Wellcome Collection. The exact digitized volume and page can be tracked through the [IIIF manifest](https://iiif.wellcomecollection.org/presentation/v2/b19581841). The local source ID is `SRC-PUBLIC-EN-HANDWRITING-002`.
+
+## More privacy-bearing cases
+
+The following examples were added because each source contains visible patient information. They use different layouts and show a successful column mask, a partial result, and a failure. None is counted as safe for automatic release merely because the second OCR pass reports zero residuals.
+
+### Structured register: 40 patient names
+
+This scanned register has a clearly printed “Name of Patient” column followed by 40 handwritten names. The project uses that column structure to cover all 40 OCR name boxes while leaving admission dates and payment columns readable.
+
+| Before processing | Project output |
+| --- | --- |
+| ![Before processing: historical patient register with 40 handwritten names](docs/assets/evaluation/english-register-1910-before.jpg) | ![Project output: the patient-name column is covered with opaque masks](docs/assets/evaluation/english-register-1910-after.jpg) |
+
+| Evaluation item | Actual result |
+| --- | --- |
+| Automatic masks | 40 name boxes |
+| OCR residual count | 0 |
+| Manual comparison | The visible name column is covered; dates and payment entries remain readable |
+| Final status | Mandatory human review because handwriting outside the recognized column may still be missed |
+
+The source is Wellcome Collection record [Register of patients](https://wellcomecollection.org/works/b9gymynv), produced in 1910 and licensed CC BY 4.0. The exact source is volume `b21892830`, page `b21892830_HB13_6_29_0006.JP2`. The local source ID is `SRC-PUBLIC-EN-REGISTER-1910-001`.
+
+### Mixed register: names covered, other identifiers remain
+
+This St Luke's Hospital register includes patient names, ages, occupations, addresses, admission dates, and family relationships. The project covered eight name-related OCR boxes, but ages and addresses remain visible. Some OCR boxes joined a name with an age, so the result also hides more than the intended name value.
+
+| Before processing | Project output |
+| --- | --- |
+| ![Before processing: St Luke's Hospital register with patient names, ages, occupations, and addresses](docs/assets/evaluation/english-st-lukes-register-before.jpg) | ![Project output: names are covered but ages and addresses remain visible](docs/assets/evaluation/english-st-lukes-register-after.jpg) |
+
+| Evaluation item | Actual result |
+| --- | --- |
+| Automatic masks | 8 name-related boxes |
+| OCR residual count | 0, but this does not cover visible age and address fields |
+| Manual comparison | Names are covered; ages, occupations, addresses, and relationships remain visible; some masks are too wide |
+| Final status | Mandatory human review; this is only a partial de-identification result |
+
+The source is Wellcome Collection record [Register of patients](https://wellcomecollection.org/works/jkk57nqr), covering 1890 to 1893 and available under the Open Government Licence. The exact source is volume `b22001487`, page `b22001487_h64_b_01_021_0006.JP2`. The local source ID is `SRC-PUBLIC-EN-ST-LUKES-001`.
+
+### Free-form case notes: failed orientation and masking
+
+This Public Domain clinical case page contains a handwritten patient name, age, dates, and medical history. The project rotated the page by 270 degrees and added one unrelated mask, while the patient name remained visible. It correctly routed the page to review, but the redaction itself failed.
+
+| Before processing | Project output |
+| --- | --- |
+| ![Before processing: handwritten clinical case page with patient identity and medical history](docs/assets/evaluation/english-case-notes-before.jpg) | ![Project output: the page is rotated and the patient name remains visible](docs/assets/evaluation/english-case-notes-after.jpg) |
+
+| Evaluation item | Actual result |
+| --- | --- |
+| Automatic masks | 1 unrelated text box |
+| Automatic rotation | 270 degrees; incorrect for this page |
+| Manual comparison | The patient name remains visible and useful medical text is unnecessarily covered |
+| Final status | Mandatory human review; do not release this output |
+
+The source is Wellcome Collection record [Case notes](https://wellcomecollection.org/works/ye6fsdb8), dated 1884 to 1902 and marked Public Domain. The exact source is volume `b19030356`, page `b19030356_0001.jp2`. The local source ID is `SRC-PUBLIC-EN-CASE-NOTES-001`.
 
 ## What it does
 
@@ -167,10 +222,15 @@ Handwriting, poor photographs, cropping, glare, and partial prior redaction are 
 | `SRC-PUBLIC-CBC-001` | A GNU Health demo CBC report in ReportSenseAI | MIT; suitable for public display and tracking |
 | `SRC-PUBLIC-EN-PHOTO-001` | Wellcome Collection English prescription-envelope photograph | CC BY 4.0; public failure-case display and tracking permitted |
 | `SRC-PUBLIC-EN-HANDWRITING-002` | Wellcome Collection 1890 Hong Kong Hospital patient register | CC BY-NC 4.0; non-commercial failure-case display and tracking permitted |
+| `SRC-PUBLIC-EN-REGISTER-1910-001` | Wellcome Collection structured patient register | CC BY 4.0; public result display and tracking permitted |
+| `SRC-PUBLIC-EN-ST-LUKES-001` | Wellcome Collection St Luke's Hospital patient register | Open Government Licence; public partial-result display and tracking permitted |
+| `SRC-PUBLIC-EN-CASE-NOTES-001` | Wellcome Collection handwritten clinical case notes | Public Domain Mark; public failure-case display and tracking permitted |
 
 The public CBC source file is fixed to ReportSenseAI commit `fe7e800f607c873717b72072018faf36bb83ec77` and was accessed on August 22, 2026. Its source SHA-256 is `700648e4c367ac42a84f3c48123c3daf1aa85114b984aab7752cf4be1523ebb3`; the project output SHA-256 is `379dff3994538c5aa155c988a71ca0649e4a56f349a866688914c287aa3bbda2`. The source ID, fixed commit, and hashes make the material and result independently traceable.
 
 The English photographed source is Wellcome Collection work `wr7zhrz9`; its source SHA-256 is `d2bc3951954dbacd0188ae44659daae319aa028dfd2a8aaf26875edbf16ca875` and project-output SHA-256 is `58757f12e4afaf91202bfdbb78b9d589285f73dbce2f40e691f546eb7b5ba89a`. The handwritten register is work `rj3pbbjd`, digitized volume `b19581841`, page `b19581841_MS_1469_0002.jp2`; its source SHA-256 is `77662f3dd25d776d3c62870bd267e88261369ba0f547a05c6d26bdbca070034f` and output SHA-256 is `73f3cbd4dbbbfa3e905bd0657d2983d0b148af98857a23b2272eaef816d2837d`. Both were accessed on August 22, 2026. Modern English patient photographs remain in protected review until their reuse rights and identity provenance are verified.
+
+The structured-register source and output SHA-256 values are `02942007c14ab77f58567f1ef93cb759860d5dd648017875a49fe78fb0dd3141` and `18c99d754b3910f7844fbab266d082e6a69835b6bf3e6aed1fe60473e5591718`. The St Luke's source and output values are `985b02f8f8f5d35d6dc09cebea6926a3bcba79c400c396660673adf47da1e6cd` and `37fab39d522542c5d0a574979cd7bd5dcc895414b8b0efc024d051a0290c263e`. The case-note source and output values are `7769336c7005f354c7314ad757fee22226e59d1867ec43b2781d711905034b3b` and `757d26d173d0f8857e734f5d54e3415e6471c1f7d87be56e7dd66d7faa2c660b`. All three were accessed on August 22, 2026 and processed with policy version `2026-08-22.4`.
 
 ## Human review is required
 

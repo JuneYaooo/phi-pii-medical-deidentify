@@ -26,6 +26,30 @@ https://iiif.wellcomecollection.org/presentation/v2/b19581841
 
 The image is licensed CC BY-NC 4.0 and credited to Wellcome Collection. The page contains handwritten patient names, ages, addresses, and diseases. The after image is actual project output: no automatic mask was applied, those fields remain visible, and low-confidence handwriting routed the page to mandatory human review. Source ID: `SRC-PUBLIC-EN-HANDWRITING-002`.
 
+The 1910 patient-register image comes from Wellcome Collection work `b9gymynv`, volume `b21892830`, page `b21892830_HB13_6_29_0006.JP2`:
+
+https://wellcomecollection.org/works/b9gymynv
+
+https://iiif.wellcomecollection.org/presentation/v2/b21892830
+
+The image is licensed CC BY 4.0 and credited to Wellcome Collection. It contains a printed patient-name column with handwritten names. The after image is actual project output: 40 opaque name masks were applied and the page remains mandatory-review material. Source ID: `SRC-PUBLIC-EN-REGISTER-1910-001`.
+
+The St Luke's Hospital register image comes from Wellcome Collection work `jkk57nqr`, volume `b22001487`, page `b22001487_h64_b_01_021_0006.JP2`:
+
+https://wellcomecollection.org/works/jkk57nqr
+
+https://iiif.wellcomecollection.org/presentation/v2/b22001487
+
+The image is available under the Open Government Licence. It contains patient names, ages, occupations, addresses, admission dates, and family relationships. The after image is actual project output: eight name-related masks were applied, other privacy fields remain visible, and the page requires human review. Source ID: `SRC-PUBLIC-EN-ST-LUKES-001`.
+
+The handwritten clinical case-note image comes from Wellcome Collection work `ye6fsdb8`, volume `b19030356`, page `b19030356_0001.jp2`:
+
+https://wellcomecollection.org/works/ye6fsdb8
+
+https://iiif.wellcomecollection.org/presentation/v2/b19030356
+
+The digital item carries the Public Domain Mark. It contains a handwritten patient name, age, dates, and medical history. The after image is actual project output: one unrelated text box was masked, the page was rotated incorrectly, and the patient name remains visible. Source ID: `SRC-PUBLIC-EN-CASE-NOTES-001`.
+
 The English prescription-envelope photograph comes from Wellcome Collection work `wr7zhrz9`, "Small prescription envelope for a Mr Clay":
 
 https://wellcomecollection.org/works/wr7zhrz9

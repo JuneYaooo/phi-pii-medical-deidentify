@@ -86,3 +86,48 @@ Exact provenance: protected local manifest
 - Original SHA-256: `d2bc3951954dbacd0188ae44659daae319aa028dfd2a8aaf26875edbf16ca875`
 - Project output SHA-256: `58757f12e4afaf91202bfdbb78b9d589285f73dbce2f40e691f546eb7b5ba89a`
 - Result: no automatic rotation or mask; the handwritten patient name remained visible; irregular text geometry routed the page to mandatory human review; this is a documented failure case, not a privacy pass.
+
+## Public English structured patient-register evaluation asset
+
+- Source ID: `SRC-PUBLIC-EN-REGISTER-1910-001`
+- Document type: 1910 patient register with a printed name column and 40 handwritten patient names
+- Collection: Wellcome Collection
+- Work record: https://wellcomecollection.org/works/b9gymynv
+- IIIF manifest: https://iiif.wellcomecollection.org/presentation/v2/b21892830
+- IIIF page: `b21892830_HB13_6_29_0006.JP2`
+- Rights: CC BY 4.0; credit Wellcome Collection
+- Accessed: 2026-08-22
+- Original SHA-256: `02942007c14ab77f58567f1ef93cb759860d5dd648017875a49fe78fb0dd3141`
+- Project output SHA-256: `18c99d754b3910f7844fbab266d082e6a69835b6bf3e6aed1fe60473e5591718`
+- Policy version: `2026-08-22.4`
+- Result: 40 name-column masks, zero OCR residual detections, and mandatory human review because handwriting outside the recognized column can still be missed.
+
+## Public English mixed-layout patient-register evaluation asset
+
+- Source ID: `SRC-PUBLIC-EN-ST-LUKES-001`
+- Document type: St Luke's Hospital register with patient names, ages, occupations, addresses, admission dates, and relationships
+- Collection: Wellcome Collection
+- Work record: https://wellcomecollection.org/works/jkk57nqr
+- IIIF manifest: https://iiif.wellcomecollection.org/presentation/v2/b22001487
+- IIIF page: `b22001487_h64_b_01_021_0006.JP2`
+- Rights: Open Government Licence
+- Accessed: 2026-08-22
+- Original SHA-256: `985b02f8f8f5d35d6dc09cebea6926a3bcba79c400c396660673adf47da1e6cd`
+- Project output SHA-256: `37fab39d522542c5d0a574979cd7bd5dcc895414b8b0efc024d051a0290c263e`
+- Policy version: `2026-08-22.4`
+- Result: eight name-related masks and zero OCR residual detections, but ages, occupations, addresses, and relationships remain visible; some masks are wider than the name value; mandatory human review.
+
+## Public English handwritten clinical case-note failure case
+
+- Source ID: `SRC-PUBLIC-EN-CASE-NOTES-001`
+- Document type: handwritten clinical case note with patient name, age, dates, and medical history
+- Collection: Wellcome Collection
+- Work record: https://wellcomecollection.org/works/ye6fsdb8
+- IIIF manifest: https://iiif.wellcomecollection.org/presentation/v2/b19030356
+- IIIF page: `b19030356_0001.jp2`
+- Rights: Public Domain Mark
+- Accessed: 2026-08-22
+- Original SHA-256: `7769336c7005f354c7314ad757fee22226e59d1867ec43b2781d711905034b3b`
+- Project output SHA-256: `757d26d173d0f8857e734f5d54e3415e6471c1f7d87be56e7dd66d7faa2c660b`
+- Policy version: `2026-08-22.4`
+- Result: one unrelated text box masked, 270-degree rotation, patient name still visible, and mandatory human review; this is a failure case, not a privacy pass.

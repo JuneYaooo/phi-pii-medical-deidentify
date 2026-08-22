@@ -286,6 +286,49 @@ def test_dense_unstructured_low_confidence_text_requires_manual_review():
     ]
 
 
+class EnglishPatientRegisterOCR:
+    def records(self, image):
+        return [
+            {"text": "REGISTER", "box": [100, 20, 220, 45], "score": 0.99},
+            {"text": "DATE OF ADMISSION", "box": [20, 70, 130, 95], "score": 0.99},
+            {"text": "NAME OF PATIENT", "box": [160, 70, 300, 95], "score": 0.99},
+            {"text": "unreadable handwriting", "box": [160, 110, 300, 135], "score": 0.90},
+        ]
+
+
+def test_english_patient_register_requires_manual_review_when_names_are_unreadable():
+    result = pipeline.redact_image(
+        Image.new("RGB", (400, 400), "white"),
+        EnglishPatientRegisterOCR(),
+        max_rounds=2,
+        auto_rotate=False,
+    )
+
+    assert result["detections"] > 0
+    assert "english_patient_register_requires_review" in {
+        item["reason"] for item in result["manual_review"]
+    }
+
+
+def test_english_patient_register_masks_name_column_and_preserves_other_columns():
+    records = [
+        {"text": "REGISTER", "box": [100, 20, 220, 45]},
+        {"text": "DATE OF ADMISSION", "box": [20, 70, 130, 95]},
+        {"text": "NAME OF PATIENT", "box": [160, 70, 300, 95]},
+        {"text": "Robert Armstrong", "box": [165, 110, 295, 135]},
+        {"text": "March 17", "box": [25, 110, 100, 135]},
+        {"text": "Sciatica", "box": [330, 110, 390, 135]},
+    ]
+
+    detections = detector.detect(records, image_size=(400, 400))
+    register_names = [
+        item for item in detections
+        if item["source"] == "english-patient-register-column"
+    ]
+
+    assert [item["record_index"] for item in register_names] == [3]
+
+
 def test_source_name_terms_only_uses_strong_filename_or_directory_hints(tmp_path):
     root = tmp_path / "materials"
     source = root / "张三" / "张三住院病历.png"

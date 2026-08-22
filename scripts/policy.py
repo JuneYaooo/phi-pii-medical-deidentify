@@ -13,6 +13,7 @@ STRUCTURED_SOURCES = {
     "masked-id-card-value",
     "masked-id-card-row",
     "patient-card-name",
+    "english-patient-register-column",
 }
 
 
@@ -85,4 +86,3 @@ def apply_balanced_policy(detections, image_size, records):
                     review.append(_review_item(peer, "body_row_mask_coverage_too_high"))
 
     return accepted, review
-
