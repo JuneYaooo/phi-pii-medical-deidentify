@@ -1,11 +1,13 @@
 # Evaluation image attribution
 
-The before image is from *A DICOM dataset for evaluation of medical image de-identification (Pseudo-PHI-DICOM-Data)*, published by The Cancer Imaging Archive:
+The source image is `MINI/uploaded_image.png` from ReportSenseAI at commit `fe7e800f607c873717b72072018faf36bb83ec77`:
 
-Rutherford, M., Mun, S. K., Levine, B., Bennett, W. C., Smith, K., Farmer, P., Jarosz, J., Wagner, U., Farahani, K., and Prior, F. (2021). DOI: https://doi.org/10.7937/s17z-r072
+https://github.com/MEDHANGSHI0708/ReportSenseAI/blob/fe7e800f607c873717b72072018faf36bb83ec77/MINI/uploaded_image.png
 
-The dataset is licensed under CC BY 4.0. The source copy was obtained from the Presidio repository, which states that its DICOM test data is stored with permission from the original dataset owners:
+ReportSenseAI is distributed under the MIT License, copyright (c) 2025 MEDHANGSHI0708.
 
-https://github.com/data-privacy-stack/presidio/blob/main/presidio-image-redactor/tests/test_data/png_images/2_ORIGINAL.png
+The identity values and institution shown in the report come from the GNU Health demo database, which GNU Health documents as academic and training data:
 
-The after image is the output produced by this project from that source image. These evaluation images retain their source attribution and are not relicensed under the project's MIT License.
+https://docs.gnuhealth.org/his/userguide/demodb.html
+
+The after image is the actual output produced by this project. Source ID: `SRC-PUBLIC-CBC-001`.

@@ -33,17 +33,15 @@ Authorization: verified educational sample
 Exact provenance: protected local manifest
 ```
 
-## Public evaluation asset
+## Public laboratory-report evaluation asset
 
-- Source ID: `SRC-PUBLIC-DICOM-001`
-- Document type: medical image with burned-in pseudo-PHI
-- Dataset: Pseudo-PHI-DICOM-Data
-- Publisher: The Cancer Imaging Archive
-- Dataset DOI: https://doi.org/10.7937/s17z-r072
-- Dataset license: CC BY 4.0
-- Upstream copy: https://github.com/data-privacy-stack/presidio/blob/main/presidio-image-redactor/tests/test_data/png_images/2_ORIGINAL.png
-- Upstream permission statement: Presidio documents that its DICOM test data is stored with permission from the original dataset owners.
-- Accessed: 2026-08-21
-- Original SHA-256: `1ced84107c8b6b152242a46f84426cff2e3639cead1e756108932a5a00074d6d`
-- Redacted SHA-256: `eba94ebcaee512309ab74f6d7a75a2f95b95678104a0f0b977ae8b4ef79c1fc2`
-- Result: name, sex, and birth date covered; zero residual text detections; human review retained because OCR content was sparse.
+- Source ID: `SRC-PUBLIC-CBC-001`
+- Document type: complete blood count laboratory report with demo identity fields
+- Upstream project: ReportSenseAI
+- Upstream file: https://github.com/MEDHANGSHI0708/ReportSenseAI/blob/fe7e800f607c873717b72072018faf36bb83ec77/MINI/uploaded_image.png
+- Upstream license: MIT
+- Demo-data documentation: https://docs.gnuhealth.org/his/userguide/demodb.html
+- Accessed: 2026-08-22
+- Original SHA-256: `700648e4c367ac42a84f3c48123c3daf1aa85114b984aab7752cf4be1523ebb3`
+- Redacted SHA-256: `379dff3994538c5aa155c988a71ca0649e4a56f349a866688914c287aa3bbda2`
+- Result: demo patient name, patient ID, age, sex, and repeated test ID covered; zero residual detections; 18 CBC rows and clinician information preserved.

@@ -75,18 +75,45 @@ def test_north_american_phone_is_masked_in_images_and_native_text():
     assert "555-1234" not in redacted
 
 
-def test_burned_in_medical_image_header_masks_name_sex_and_birth_date():
+def test_report_footer_staff_label_is_not_treated_as_viewer_identity():
     records = [
-        {"text": "KAUFMAN SCOTT [M] 03.09.2012", "box": [0, 0, 230, 12]},
-        {"text": "DOB: 07.22.1943", "box": [1, 12, 116, 28]},
+        {"text": "送检医生董藏", "box": [95, 800, 230, 834]},
+        {"text": "张三医生", "box": [100, 8, 200, 36]},
     ]
 
-    detections = detector.detect(records, image_size=(394, 552))
-    entities = {item["entity"] for item in detections}
+    detections = detector.detect(records, image_size=(1280, 960))
+    ui_indexes = {
+        item["record_index"] for item in detections if item["source"] == "ui-name-before-role"
+    }
 
-    assert "IDENTITY_ROW" in entities
-    assert "BIRTH_DATE" in entities
-    assert all(item["box"][1] <= 28 for item in detections)
+    assert 0 not in ui_indexes
+    assert 1 in ui_indexes
+
+
+def test_english_laboratory_identity_block_masks_patient_but_preserves_doctor():
+    records = [
+        {"text": "LABORATORY REPORT", "box": [240, 94, 380, 108]},
+        {"text": "Name", "box": [47, 113, 85, 129]},
+        {"text": "Ana Betz", "box": [102, 113, 160, 128]},
+        {"text": "Patient ID PAC001", "box": [387, 113, 488, 128]},
+        {"text": "Age 25y 10m 26d", "box": [329, 127, 432, 147]},
+        {"text": "Sex Female", "box": [463, 131, 533, 145]},
+        {"text": "Date", "box": [47, 131, 79, 146]},
+        {"text": "2011-08-25 08:32", "box": [103, 131, 201, 145]},
+        {"text": "Doctor", "box": [47, 149, 89, 163]},
+        {"text": "Cameron Cordara", "box": [103, 149, 199, 162]},
+        {"text": "Test id B165AAF4", "box": [448, 149, 550, 162]},
+        {"text": "Test id : B165AAF4", "box": [367, 626, 479, 641]},
+    ]
+
+    detections = detector.detect(records, image_size=(600, 653))
+    detected_indexes = {item["record_index"] for item in detections}
+
+    assert {2, 3, 4, 5, 10, 11}.issubset(detected_indexes)
+    assert 6 not in detected_indexes
+    assert 7 not in detected_indexes
+    assert 8 not in detected_indexes
+    assert 9 not in detected_indexes
 
 
 def test_medical_identifier_labels_mask_values_and_preserve_nearby_batch_number():
@@ -96,6 +123,7 @@ def test_medical_identifier_labels_mask_values_and_preserve_nearby_batch_number(
         {"text": "检验单号", "box": [10, 80, 90, 105]},
         {"text": "LAB20250315001", "box": [100, 80, 260, 105]},
         {"text": "药品批号：LOT20250315001", "box": [10, 120, 270, 145]},
+        {"text": "发票号码01425472", "box": [10, 155, 230, 180]},
     ]
 
     detections = detector.detect(records, image_size=(600, 400))
@@ -103,7 +131,7 @@ def test_medical_identifier_labels_mask_values_and_preserve_nearby_batch_number(
         item["record_index"] for item in detections if item["entity"] == "MEDICAL_ID"
     }
 
-    assert {0, 1, 3}.issubset(medical_indexes)
+    assert {0, 1, 3, 5}.issubset(medical_indexes)
     assert 4 not in medical_indexes
 
 

@@ -9,26 +9,26 @@
 
 English | [简体中文](README.zh-CN.md)
 
-This project is designed for photographs, scans, prescriptions, laboratory reports, and other medical material. It uses local text recognition to locate patient identity fields, creates a new copy with opaque black masks, and checks the result again. Originals remain unchanged, and real records do not need to be sent to a public recognition service.
+This project is designed for laboratory sheets, pathology reports, examination reports, prescriptions, and other text- or table-heavy medical documents. It uses local text recognition to locate patient identity fields, creates a new copy with opaque black masks, and checks the result again. Originals remain unchanged, and real records do not need to be sent to a public recognition service.
 
 > This project is not a privacy certification, legal advice, or a guarantee of complete anonymity. Every document requires a final human review before external release.
 
 ## Before and after
 
-The images below are the actual input and actual project output from the same medical image; no masks were added by hand. The source had a patient name, sex, and birth date burned into its upper-left pixels. The output covers those identity fields with opaque black masks while preserving the medical image itself.
+Below are the source and actual project output for the same complete blood count report. No masks were added by hand. The project handles private text in reports, not X-rays, CT scans, or other diagnostic imagery.
 
 | Before processing | Project output |
 | --- | --- |
-| ![Before processing: identity text appears in the upper-left corner](docs/assets/evaluation/open-medical-image-before.png) | ![After processing: identity text is covered with opaque masks](docs/assets/evaluation/open-medical-image-after.png) |
+| ![Before processing: demo patient identity fields appear in the CBC report header](docs/assets/evaluation/open-laboratory-report-before.png) | ![After processing: identity fields are covered and CBC results remain readable](docs/assets/evaluation/open-laboratory-report-after.png) |
 
-| Result | Explanation |
+| Effect | Actual result |
 | --- | --- |
-| Covered | Name, sex, and birth date |
-| Residual text findings | 0 |
-| Preserved | Medical image and non-identity content |
-| Review status | Human review required because the image contains only two recognized lines of small text, which the automatic quality check considers too sparse |
+| Covered | Demo patient name, patient ID, age, sex, and the test ID repeated in the header and footer |
+| Residual text | The second OCR pass found none of those identity fields |
+| Preserved | 18 CBC items, results, abnormal markers, normal ranges, units, report date, and doctor name |
+| Manual comparison | Identity fields are covered and the laboratory body remains readable |
 
-The image comes from Pseudo-PHI-DICOM-Data, a dataset designed to evaluate medical-image de-identification. Its identity fields are pseudo-PHI used for evaluation, not a real patient's identity. The Cancer Imaging Archive publishes the dataset under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); this project uses a [Presidio test file stored with permission from the original dataset owners](https://github.com/data-privacy-stack/presidio/blob/main/presidio-image-redactor/tests/test_data/png_images/2_ORIGINAL.png). The complete dataset and citation are tracked through [DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072), and the local source ID is `SRC-PUBLIC-DICOM-001`.
+The asset is an MIT-licensed [ReportSenseAI test file at a fixed commit](https://github.com/MEDHANGSHI0708/ReportSenseAI/blob/fe7e800f607c873717b72072018faf36bb83ec77/MINI/uploaded_image.png). Ana Betz and GNU Solidario Hospital come from the [official GNU Health demo database](https://docs.gnuhealth.org/his/userguide/demodb.html), which is provided for academic and training use rather than as a real patient record. The local source ID is `SRC-PUBLIC-CBC-001`.
 
 ## Real pathology-report evaluation
 
@@ -70,7 +70,7 @@ Redistribution permission and patient authorization for the source could not be 
 
 | Material | Common examples |
 | --- | --- |
-| Medical images | Phone photos, prescription images, report screenshots, and scans |
+| Medical document images | Phone photos of laboratory sheets, prescriptions, report screenshots, and scans |
 | Multi-page reports | PDF records, examination reports, and discharge material |
 | Office documents | Word records, Excel laboratory tables, and registries |
 | Text material | Plain, tabular, and structured text |
@@ -85,7 +85,7 @@ Redistribution permission and patient authorization for the source could not be 
 | Phones, email addresses, and home addresses | Laboratory items, values, and reference ranges |
 | Birth dates, employers, and bank card numbers | Specimen details, lesion sites, grades, and conclusions |
 | Medical record, inpatient, outpatient, and insurance numbers | Institutions, departments, and clinicians |
-| Prescription, examination, laboratory, pathology, and specimen numbers | Admission, discharge, examination, and report dates |
+| Prescription, examination, laboratory, pathology, specimen, and medical billing receipt numbers | Admission, discharge, examination, and report dates |
 
 Preserved details can still create indirect identification risk when combined with a rare condition, institution, or date. The final policy should reflect the material's intended use and the organization's privacy requirements.
 
@@ -149,10 +149,10 @@ These materials lacked complete field-level ground truth, so they are used to ob
 
 | Source ID | Material | Permission and use |
 | --- | --- | --- |
-| `SRC-PUBLIC-DICOM-001` | A TCIA Pseudo-PHI-DICOM-Data medical image obtained through Presidio's test resources | CC BY 4.0; suitable for public display and tracking |
+| `SRC-PUBLIC-CBC-001` | A GNU Health demo CBC report in ReportSenseAI | MIT; suitable for public display and tracking |
 | `SRC-REAL-PATHOLOGY-001` | A pathology report with real patient fields from a public page | Redistribution and patient authorization could not be verified; isolated local evaluation only |
 
-The public medical-image citation is: Rutherford, M. et al., *A DICOM dataset for evaluation of medical image de-identification (Pseudo-PHI-DICOM-Data)*, The Cancer Imaging Archive, 2021, [DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072).
+The public CBC source file is fixed to ReportSenseAI commit `fe7e800f607c873717b72072018faf36bb83ec77` and was accessed on August 22, 2026. Its source SHA-256 is `700648e4c367ac42a84f3c48123c3daf1aa85114b984aab7752cf4be1523ebb3`; the project output SHA-256 is `379dff3994538c5aa155c988a71ca0649e4a56f349a866688914c287aa3bbda2`. The source ID, fixed commit, and hashes make the material and result independently traceable.
 
 The real pathology report is tracked as follows:
 

@@ -9,26 +9,26 @@
 
 [English](README.md) | 简体中文
 
-这个项目面向病历照片、扫描件、处方、检验报告和其他医疗材料。它通过本地文字识别找到患者身份字段，生成使用不透明黑块遮挡的新副本，并再次检查处理结果。原件不会被改写，真实材料不需要上传到公共识别服务。
+这个项目面向检验单、化验单、病理报告、检查报告、处方和其他以文字或表格为主的医疗文档。它通过本地文字识别找到患者身份字段，生成使用不透明黑块遮挡的新副本，并再次检查处理结果。原件不会被改写，真实材料不需要上传到公共识别服务。
 
 > 本项目不是医疗隐私合规认证，也不构成法律意见或完全匿名保证。任何材料对外分享前，都应完成最终人工复核。
 
 ## 效果展示
 
-下面是同一张医学影像的实际输入和本项目实际输出，没有手工补画遮挡。左上角原本烧录了患者姓名、性别和出生日期；处理后这些身份信息被不透明黑块覆盖，医学影像主体保持可见。
+下面是同一张血常规化验报告的原图和本项目实际输出，没有手工补画遮挡。项目处理的是报告里的文字隐私，不是 X 光、CT 或其他医学影像内容。
 
 | 处理前 | 本项目处理后 |
 | --- | --- |
-| ![处理前：医学影像左上角带有身份信息](docs/assets/evaluation/open-medical-image-before.png) | ![处理后：身份信息被不透明黑块遮挡](docs/assets/evaluation/open-medical-image-after.png) |
+| ![处理前：血常规报告表头含演示患者身份字段](docs/assets/evaluation/open-laboratory-report-before.png) | ![处理后：身份字段被黑块覆盖，血常规结果保持可读](docs/assets/evaluation/open-laboratory-report-after.png) |
 
-| 结果 | 说明 |
+| 效果 | 实际结果 |
 | --- | --- |
-| 已遮挡 | 姓名、性别和出生日期 |
-| 处理后文字残留 | 0 项 |
-| 保留内容 | 医学影像主体和非身份信息 |
-| 审核状态 | 需要人工复核，因为整张影像只有两行可识别小字，自动检查认为文字过稀 |
+| 已遮挡 | 演示患者姓名、患者 ID、年龄、性别，以及页眉和页脚重复出现的检验 ID |
+| 处理后文字残留 | 二次 OCR 未检出上述身份字段残留 |
+| 保留内容 | 18 项血常规项目、结果、异常标记、正常范围、单位、报告日期和医生姓名 |
+| 人工对照 | 身份字段已覆盖，化验正文保持可读 |
 
-这张图来自专门评估医学影像去身份化的 Pseudo-PHI-DICOM-Data 数据集，其中身份字段是用于测评的伪身份信息，不是真实患者身份。数据集由 The Cancer Imaging Archive 发布，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可；本项目使用的是 [Presidio 收录并获得原数据集所有者许可的测试文件](https://github.com/data-privacy-stack/presidio/blob/main/presidio-image-redactor/tests/test_data/png_images/2_ORIGINAL.png)。完整数据集和引用信息可通过 [DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072) 追踪，项目内来源编号为 `SRC-PUBLIC-DICOM-001`。
+素材来自 MIT 许可的 [ReportSenseAI 固定版本测试文件](https://github.com/MEDHANGSHI0708/ReportSenseAI/blob/fe7e800f607c873717b72072018faf36bb83ec77/MINI/uploaded_image.png)。报告中的 Ana Betz 和 GNU Solidario Hospital 属于 [GNU Health 官方演示数据库](https://docs.gnuhealth.org/his/userguide/demodb.html)；官方说明该数据库用于教学和训练，而不是实际患者病历。项目内来源编号为 `SRC-PUBLIC-CBC-001`。
 
 ## 真实病理报告评估
 
@@ -70,7 +70,7 @@
 
 | 材料 | 常见例子 |
 | --- | --- |
-| 医疗图片 | 手机拍摄病历、处方照片、报告截图、扫描件 |
+| 医疗文档图片 | 手机拍摄的检验单、化验单、处方、报告截图和扫描件 |
 | 多页报告 | PDF 病历、检查报告、出院材料 |
 | 办公文档 | Word 病历、Excel 检验表和登记表 |
 | 文本材料 | 普通文本、表格文本和结构化文本 |
@@ -85,7 +85,7 @@
 | 电话、邮箱和家庭地址 | 检验项目、数值和参考范围 |
 | 出生日期、工作单位和银行卡号 | 标本、病灶位置、分级和检查结论 |
 | 病案号、住院号、门诊号和医保号 | 医院、科室和医务人员姓名 |
-| 处方号、检查号、检验单号、病理号和样本号 | 入院、出院、检查和报告日期 |
+| 处方号、检查号、检验单号、病理号、样本号和医疗收费票据号 | 入院、出院、检查和报告日期 |
 
 保留项在特定场景中仍可能与罕见疾病、机构或日期组合形成间接识别风险。最终遮挡范围应根据材料用途和组织政策决定。
 
@@ -149,10 +149,10 @@
 
 | 来源编号 | 素材 | 授权与用途 |
 | --- | --- | --- |
-| `SRC-PUBLIC-DICOM-001` | TCIA Pseudo-PHI-DICOM-Data 医学影像，经 Presidio 测试资源取得 | CC BY 4.0，可公开展示和追踪 |
+| `SRC-PUBLIC-CBC-001` | ReportSenseAI 中的 GNU Health 演示血常规报告 | MIT，可公开展示和追踪 |
 | `SRC-REAL-PATHOLOGY-001` | 公开网页中的真实患者字段病理报告 | 转载和患者授权无法核实，仅限隔离的本地评估 |
 
-公开医学影像的标准引用为：Rutherford, M. 等，*A DICOM dataset for evaluation of medical image de-identification (Pseudo-PHI-DICOM-Data)*，The Cancer Imaging Archive，2021，[DOI 10.7937/s17z-r072](https://doi.org/10.7937/s17z-r072)。
+公开血常规报告的原文件固定在 ReportSenseAI 提交 `fe7e800f607c873717b72072018faf36bb83ec77`，获取日期为 2026 年 8 月 22 日。原图文件指纹为 `700648e4c367ac42a84f3c48123c3daf1aa85114b984aab7752cf4be1523ebb3`，本项目输出文件指纹为 `379dff3994538c5aa155c988a71ca0649e4a56f349a866688914c287aa3bbda2`；可用来源编号、固定提交和文件指纹核对素材与结果。
 
 真实患者字段病理报告的追踪记录如下：
 

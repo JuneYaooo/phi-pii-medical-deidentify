@@ -24,6 +24,8 @@ LABELS = {
         "X光 No", "X光No", "X线 No", "X线No", "X-ray No", "X-rayNo",
         "Hospital No", "HospitalNo", "住院 No", "住院No",
         "X光号", "X线号", "检查编号", "检验流水号", "报告流水号", "流水号",
+        "收费票据号码", "收费票据号", "电子票据号码", "电子票据号", "发票号码", "发票号", "结算单号",
+        "Test ID", "Test Id", "Test id",
         "Accession Number", "AccNum", "摄片编号", "摄片号", "GCP编号", "GCP号", "床号",
     ),
 }
@@ -566,7 +568,7 @@ def peripheral_ui_identity_detections(records, image_size):
     """
     if not image_size:
         return []
-    width, _ = image_size
+    width, height = image_size
     hits = []
     ui_badges = [
         record for record in records
@@ -574,7 +576,7 @@ def peripheral_ui_identity_detections(records, image_size):
     ]
     for index, record in enumerate(records):
         text = re.sub(r"\s+", "", record["text"])
-        center_x, _ = rect_center(record["box"])
+        center_x, center_y = rect_center(record["box"])
 
         # PACS/export filenames such as 20248106_张三_2 or 20248106张.
         if re.fullmatch(r"\d{5,}[_-]?[一-鿿·]{1,4}(?:[_-]?\d+)?", text):
@@ -596,55 +598,65 @@ def peripheral_ui_identity_detections(records, image_size):
             continue
 
         # Browser/PACS tabs often merge a name and role into one OCR token.
-        if not is_staff_name_text(text) and "姓名" not in text and any(role in text for role in UI_PERSON_ROLE_HINTS):
+        in_ui_chrome = center_y <= height * 0.12 or center_x >= width * 0.78
+        if (
+            in_ui_chrome
+            and not is_staff_name_text(text)
+            and "姓名" not in text
+            and any(role in text for role in UI_PERSON_ROLE_HINTS)
+        ):
             match = re.match(r"[一-鿿·]{2,4}(?=" + "|".join(map(re.escape, UI_PERSON_ROLE_HINTS)) + r")", text)
             if match:
                 hits.append(make_detection("NAME", "ui-name-before-role", index, record["text"], record["box"], match.span()))
     return hits
 
 
-def burned_in_medical_header_detections(records, image_size):
+def english_medical_identity_detections(records, rows, image_size):
     if not image_size:
         return []
-    top_limit = image_size[1] * 0.12
-    top_records = [
+    _, height = image_size
+    header_limit = height * 0.35
+    header_records = [
         (index, record) for index, record in enumerate(records)
-        if rect_center(record["box"])[1] <= top_limit
+        if rect_center(record["box"])[1] <= header_limit
     ]
-    has_birth_anchor = any(
-        re.search(r"\b(?:DOB|Date of Birth)\s*[:：]", record["text"], re.IGNORECASE)
-        for _, record in top_records
+    header_text = " ".join(record["text"] for _, record in header_records).upper()
+    report_anchor = any(
+        title in header_text
+        for title in ("LABORATORY REPORT", "LAB REPORT", "PATHOLOGY REPORT", "MEDICAL REPORT")
     )
-    if not has_birth_anchor:
+    identity_anchors = sum(
+        bool(re.search(pattern, header_text))
+        for pattern in (r"\bNAME\b", r"\bPATIENT\s*ID\b", r"\bAGE\b", r"\bSEX\b", r"\bTEST\s*ID\b")
+    )
+    if not report_anchor or identity_anchors < 3:
         return []
 
     hits = []
-    for index, record in top_records:
-        text = record["text"]
-        name_match = re.match(r"[A-Z][A-Z' -]{2,60}\s+\[[MFU]\]", text)
-        if name_match:
-            hits.append(make_detection(
-                "IDENTITY_ROW",
-                "burned-in-medical-name-sex",
-                index,
-                text,
-                record["box"],
-                name_match.span(),
-            ))
-        birth_match = re.search(
-            r"\b(?:DOB|Date of Birth)\s*[:：]\s*(\d{1,2}[-./]\d{1,2}[-./]\d{4}|\d{4}[-./]\d{1,2}[-./]\d{1,2})",
-            text,
-            re.IGNORECASE,
-        )
-        if birth_match:
-            hits.append(make_detection(
-                "BIRTH_DATE",
-                "burned-in-medical-birth-date",
-                index,
-                text,
-                record["box"],
-                birth_match.span(1),
-            ))
+    for index, record in header_records:
+        text = record["text"].strip()
+        for entity, label in (("AGE", "Age"), ("SEX", "Sex")):
+            match = re.match(rf"{label}\s*[:：]?\s*(.+)", text, re.IGNORECASE)
+            if match:
+                hits.append(make_detection(entity, "english-medical-identity", index, text, record["box"], match.span(1)))
+
+    name_label_indexes = {
+        index for index, record in header_records
+        if re.fullmatch(r"Name\s*[:：]?", record["text"].strip(), re.IGNORECASE)
+    }
+    for row in rows:
+        items = sorted(row["items"], key=lambda item: item[1]["box"][0])
+        for position, (index, record) in enumerate(items):
+            if index not in name_label_indexes:
+                continue
+            for value_index, value_record in items[position + 1:]:
+                gap = value_record["box"][0] - record["box"][2]
+                if gap < -2 or gap > max(row["height"] * 4.0, 90.0):
+                    continue
+                value = value_record["text"].strip()
+                if re.fullmatch(r"[A-Za-z][A-Za-z .,'\-]{1,60}", value):
+                    hits.append(make_detection("NAME", "english-medical-name-neighbor", value_index, value, value_record["box"]))
+                break
     return hits
 
 
@@ -907,7 +919,7 @@ def detect(records, image_size=None, source_terms=()):
     detections.extend(masked_id_card_detections(records, rows, image_size))
     detections.extend(source_term_detections(records, source_terms))
     detections.extend(peripheral_ui_identity_detections(records, image_size))
-    detections.extend(burned_in_medical_header_detections(records, image_size))
+    detections.extend(english_medical_identity_detections(records, rows, image_size))
     detections.extend(header_identifier_detections(records, rows, image_size))
     detections.extend(identity_row_detections(records, rows, image_size))
     detections.extend(contact_identity_row_detections(rows))
