@@ -88,6 +88,22 @@ def _low_confidence_review(image_size):
     }
 
 
+def _unstructured_low_confidence_review(records, image_size, threshold=0.75, minimum_records=20):
+    label_hits, median_score, _, record_count = _record_quality(records)
+    if record_count < minimum_records or label_hits or median_score >= threshold:
+        return None
+    width, height = image_size
+    fingerprint = f"unstructured-low-confidence:{width}x{height}:{record_count}:{median_score:.3f}"
+    return {
+        "status": "needs_manual_review",
+        "entity": "OCR_QUALITY",
+        "source": "ocr-confidence",
+        "box": [0, 0, width, height],
+        "reason": "unstructured_low_confidence_text_requires_review",
+        "finding_hash": hashlib.sha256(fingerprint.encode("utf-8")).hexdigest()[:16],
+    }
+
+
 def _irregular_text_geometry_review(records, image_size, threshold=0.35):
     heights = [
         max(1.0, float(record["box"][3]) - float(record["box"][1]))
@@ -207,6 +223,9 @@ def redact_image(image, ocr, source_terms=(), max_rounds=2, padding=8, auto_rota
         if round_number == 1 and records and _record_quality(records)[1] < 0.5:
             manual_review.append(_low_confidence_review(current.size))
         if round_number == 1:
+            unstructured_confidence = _unstructured_low_confidence_review(records, current.size)
+            if unstructured_confidence:
+                manual_review.append(unstructured_confidence)
             irregular_geometry = _irregular_text_geometry_review(records, current.size)
             if irregular_geometry:
                 manual_review.append(irregular_geometry)

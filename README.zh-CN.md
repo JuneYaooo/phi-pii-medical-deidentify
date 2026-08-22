@@ -15,7 +15,7 @@
 
 ## 中文效果案例
 
-中文页只使用中文医疗材料，所有效果案例均来自体检报告、检验单或处方等医疗文书。案例按标准电子报告、手机拍照和手写材料分开评估；英文案例见 [English README](README.md)。“迁移到其他领域”只说明这套方法的可配置性，不属于效果案例或测评结果。
+中文页只使用中文医疗材料，所有效果案例均来自体检报告、检验单或处方等医疗文书。当前已有标准电子报告案例和手机拍照受控评测；英文手写患者登记簿案例见 [English README](README.md)。“迁移到其他领域”只说明这套方法的可配置性，不属于效果案例或测评结果。
 
 ### 标准电子报告：职业健康检查表
 
@@ -42,24 +42,11 @@
 
 素材来自 Apache-2.0 项目 [BloodTestReportOCR 的固定版本测试图](https://github.com/csxiaoyaojianxian/BloodTestReportOCR/blob/95d058e4999806fa50bbcf6d10fe8a0af5746759/BloodTestReportOCR/origin_pics/bloodtestreport2.jpg)，来源编号为 `SRC-OPEN-CBC-UNVERIFIED-001`。由于患者公开授权无法核实，仓库不复制带身份信息的原图，也不把该案例包装成可自由传播的公开演示。
 
-### 手写处方：必须人工复核
+### 中文手写案例：暂不冒充有效测评
 
-下面是 Wellcome Collection 收藏的中文手写三方。它没有患者身份栏，因此是手写版式的负对照：项目不应误遮药名，同时必须认识到 OCR 对这类手写材料不可靠。
+此前展示的中文手写处方没有患者姓名、就诊号、电话或地址，无法验证隐私字段能否被遮挡，因此已从效果案例中撤下。它最多只能测试 OCR 是否会误遮药名，不能回答“手写患者信息是否被去除”。
 
-| 处理前 | 本项目处理后 |
-| --- | --- |
-| ![处理前：中文手写三方](docs/assets/evaluation/chinese-handwritten-prescriptions-before.jpg) | ![处理后：未误加遮挡，页面进入人工复核](docs/assets/evaluation/chinese-handwritten-prescriptions-after.jpg) |
-
-| 评估项 | 实际结果 |
-| --- | --- |
-| 自动遮挡 | 0 处，未把药名误当作患者身份 |
-| 处理后残留 | 0 项，但原图没有可验证的患者身份字段，不能据此评价姓名召回 |
-| 风险分流 | 同时触发不规则版式和大字框两项人工复核提示 |
-| 最终状态 | 必须人工复核，不能自动发布 |
-
-因此，手写材料的评测结论不是“自动通过”，而是“成功进入人工复核”。即使二次 OCR 显示残留为 0，也不能证明手写身份信息不存在。上面只展示许可清晰且不含患者身份栏的历史馆藏；可能包含现代真实患者信息的手写原图仍不会公开。
-
-素材来自 Wellcome Collection 的 [Chinese manuscript, three prescriptions](https://wellcomecollection.org/works/fzyw6u4c)，采用 CC BY 4.0，署名 Wellcome Collection。项目内来源编号为 `SRC-PUBLIC-CN-HANDWRITING-001`。
+目前还没有找到同时满足以下条件的中文手写医疗原图：图中确有可验证的患者隐私字段；素材来源和具体页面可追踪；患者授权或历史馆藏的再发布许可清晰。在找到合格素材前，中文手写栏不公布遮挡效果，也不以二次 OCR 的“残留 0”声称成功。英文页已经加入一份含患者姓名、年龄、地址和疾病的 1890 年医院登记簿，用于公开展示当前手写识别的真实失败结果。
 
 ## 能做什么
 
@@ -151,13 +138,10 @@
 | 来源编号 | 素材 | 授权与用途 |
 | --- | --- | --- |
 | `SRC-PUBLIC-CN-OCCUPATIONAL-001` | healthyCheckUi 中文职业健康检查表 | LGPL-3.0，上游允许学习和教学案例，可公开展示和追踪 |
-| `SRC-PUBLIC-CN-HANDWRITING-001` | Wellcome Collection 中文手写三方 | CC BY 4.0，可公开展示手写版式负对照 |
 | `SRC-OPEN-CBC-UNVERIFIED-001` | BloodTestReportOCR 中文血常规拍照件 | 项目为 Apache-2.0，但患者授权无法核实，仅限受控评测 |
 | `SRC-REAL-PATHOLOGY-001` | 公开网页中的中文病理报告照片 | 转载和患者授权无法核实，仅限隔离评测 |
 
 公开职业健康检查表固定在 healthyCheckUi 提交 `c6b50346993f7e8debdc567e3469b8fa74eaaafb`，获取日期为 2026 年 8 月 22 日。仓库内处理前文件指纹为 `92a716af0c62ede83854b09e775cfa99eaddfa962558cc7da363e3482bb3ea33`，处理后文件指纹为 `34ca89dc781aeebd70127282c379bcc06f9d3c33698756292a1cc150e4c38db1`。
-
-中文手写三方的处理前文件指纹为 `eaa894e2a76c3789c494267d988e2b2dc69b91f6aa2d54231191462f5e4e68c8`，处理后文件指纹为 `675d34a71c923454b125b98bfb44c71f01e5df64cf272b2380f889b665122746`。
 
 受保护的来源台账保存网页地址、固定版本、获取日期、文件指纹、授权状态和对应结果。无法确认患者授权的材料不会把原图或原始身份信息收入仓库。
 

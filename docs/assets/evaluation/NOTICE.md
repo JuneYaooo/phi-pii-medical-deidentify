@@ -18,20 +18,16 @@ https://github.com/scmt1/healthyCheckUi/blob/c6b50346993f7e8debdc567e3469b8fa74e
 
 healthyCheckUi is distributed under the LGPL-3.0 License. Its README states that the screenshots show completed functionality and permits personal learning and teaching cases with source attribution. The processed image is actual project output and remains subject to mandatory human review because the source combines multiple report pages. Source ID: `SRC-PUBLIC-CN-OCCUPATIONAL-001`.
 
-The English handwritten prescription photograph comes from Wellcome Collection work `sxd2fhzw`, "M0000895: Henry Hill Hickman, Prescription number 77":
+The English handwritten patient-register photograph comes from Wellcome Collection work `rj3pbbjd`, "Register of Patients in the Hong Kong Hospital", digitized volume `b19581841`, page `b19581841_MS_1469_0002.jp2`:
 
-https://wellcomecollection.org/works/sxd2fhzw
+https://wellcomecollection.org/works/rj3pbbjd
 
-Wellcome Collection marks the digital item with the Public Domain Mark. The after image is actual project output: no automatic mask was applied, and the page was routed to mandatory human review. Source ID: `SRC-PUBLIC-EN-HANDWRITING-001`.
+https://iiif.wellcomecollection.org/presentation/v2/b19581841
+
+The image is licensed CC BY-NC 4.0 and credited to Wellcome Collection. The page contains handwritten patient names, ages, addresses, and diseases. The after image is actual project output: no automatic mask was applied, those fields remain visible, and low-confidence handwriting routed the page to mandatory human review. Source ID: `SRC-PUBLIC-EN-HANDWRITING-002`.
 
 The English prescription-envelope photograph comes from Wellcome Collection work `wr7zhrz9`, "Small prescription envelope for a Mr Clay":
 
 https://wellcomecollection.org/works/wr7zhrz9
 
 The image is licensed CC BY 4.0 and credited to Wellcome Collection. The after image is actual project output: no automatic rotation or mask was applied, and the page was routed to mandatory human review. Source ID: `SRC-PUBLIC-EN-PHOTO-001`.
-
-The Chinese handwritten-prescription image comes from Wellcome Collection work `fzyw6u4c`, "Chinese manuscript, three prescriptions":
-
-https://wellcomecollection.org/works/fzyw6u4c
-
-The image is licensed CC BY 4.0 and credited to Wellcome Collection. The after image is actual project output: no automatic mask was applied and the page was routed to mandatory human review. The manuscript has no patient identity block and is used as a handwriting negative control. Source ID: `SRC-PUBLIC-CN-HANDWRITING-001`.

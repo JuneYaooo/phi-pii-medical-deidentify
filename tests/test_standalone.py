@@ -259,6 +259,33 @@ def test_large_handwriting_geometry_requires_manual_review_when_ocr_finds_no_pii
     ]
 
 
+class DenseUnstructuredOCR:
+    def records(self, image):
+        return [
+            {
+                "text": f"uncertain cursive row {index}",
+                "box": [10, index * 12, 300, index * 12 + 10],
+                "score": 0.72,
+            }
+            for index in range(20)
+        ]
+
+
+def test_dense_unstructured_low_confidence_text_requires_manual_review():
+    result = pipeline.redact_image(
+        Image.new("RGB", (400, 400), "white"),
+        DenseUnstructuredOCR(),
+        max_rounds=2,
+        auto_rotate=False,
+    )
+
+    assert result["detections"] == 0
+    assert result["residual_detections"] == 0
+    assert [item["reason"] for item in result["manual_review"]] == [
+        "unstructured_low_confidence_text_requires_review"
+    ]
+
+
 def test_source_name_terms_only_uses_strong_filename_or_directory_hints(tmp_path):
     root = tmp_path / "materials"
     source = root / "张三" / "张三住院病历.png"

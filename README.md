@@ -38,7 +38,7 @@ The English page uses English-language medical evidence only. Every showcased ca
 | --- | --- | --- |
 | Standard scan or digital report | GNU Health demo CBC shown above | 9 masks, zero OCR residual detections, 18 CBC rows preserved |
 | Photographed document | CC BY 4.0 photograph of an English prescription envelope | Zero masks; the upside-down handwritten patient name remained visible; routed to review |
-| Handwritten document | Separate public-domain historical prescription-book photograph | Zero masks; the handwritten recipient name remained visible; routed to review |
+| Handwritten document | 1890 Hong Kong Hospital patient register with names, ages, addresses, and diseases | Zero masks; the patient information remained visible; routed to review |
 
 The photographed and handwritten rows intentionally report failures rather than inflate the success rate. A repository license or a search-result page does not prove that a modern patient consented to republication. Modern patient photographs will only be promoted to public evidence after the source, license, demo or patient status, project output, and manual comparison can all be tracked.
 
@@ -59,22 +59,23 @@ This English prescription-envelope photograph is upside down and contains a hand
 
 The source is Wellcome Collection record [Small prescription envelope for a Mr Clay](https://wellcomecollection.org/works/wr7zhrz9), licensed CC BY 4.0 and credited to Wellcome Collection. The local source ID is `SRC-PUBLIC-EN-PHOTO-001`.
 
-### Photographed handwriting: historical prescription
+### Handwritten document: patient register
 
-This public-domain Wellcome Collection photograph contains a handwritten recipient name. The project output is shown exactly as produced: it applies no mask, so the name remains visible, but the page is now routed to mandatory human review instead of being reported as an automatic pass.
+This 1890 Hong Kong Hospital register is a genuine handwritten medical record with explicit privacy fields rather than a handwriting-only sample. Each row contains a patient's name and age, and many rows also contain an address and disease. The project output is shown exactly as produced: it applies no mask, so the patient information remains visible. The low-confidence handwriting is now routed to mandatory human review instead of being reported as an automatic pass.
 
 | Before processing | Project output |
 | --- | --- |
-| ![Before processing: historical handwritten prescription with a recipient name](docs/assets/evaluation/english-handwritten-prescription-before.jpg) | ![Project output: no automatic mask was applied and the page requires human review](docs/assets/evaluation/english-handwritten-prescription-after.jpg) |
+| ![Before processing: handwritten Hong Kong Hospital patient register with names, ages, addresses, and diseases](docs/assets/evaluation/english-handwritten-patient-register-before.jpg) | ![Project output: patient information remains visible and the page requires human review](docs/assets/evaluation/english-handwritten-patient-register-after.jpg) |
 
 | Evaluation item | Actual result |
 | --- | --- |
 | Automatic masks | 0 |
 | OCR residual count | 0, but this is not a pass because OCR did not reliably read the handwriting |
-| Manual comparison | The handwritten recipient name remains visible |
+| Privacy fields in the source | Patient names, ages, addresses, and diseases |
+| Manual comparison | Those patient fields remain visible; this output has not passed de-identification |
 | Final status | Mandatory human review; do not release automatically |
 
-The source is Wellcome Collection record [M0000895: Henry Hill Hickman, Prescription number 77](https://wellcomecollection.org/works/sxd2fhzw), described as a photograph of a prescription-book section and marked Public Domain. The local source ID is `SRC-PUBLIC-EN-HANDWRITING-001`.
+The source is Wellcome Collection record [Register of Patients in the Hong Kong Hospital](https://wellcomecollection.org/works/rj3pbbjd), dated 1890 and licensed CC BY-NC 4.0 with credit to Wellcome Collection. The exact digitized volume and page can be tracked through the [IIIF manifest](https://iiif.wellcomecollection.org/presentation/v2/b19581841). The local source ID is `SRC-PUBLIC-EN-HANDWRITING-002`.
 
 ## What it does
 
@@ -165,11 +166,11 @@ Handwriting, poor photographs, cropping, glare, and partial prior redaction are 
 | --- | --- | --- |
 | `SRC-PUBLIC-CBC-001` | A GNU Health demo CBC report in ReportSenseAI | MIT; suitable for public display and tracking |
 | `SRC-PUBLIC-EN-PHOTO-001` | Wellcome Collection English prescription-envelope photograph | CC BY 4.0; public failure-case display and tracking permitted |
-| `SRC-PUBLIC-EN-HANDWRITING-001` | Wellcome Collection historical prescription photograph | Public Domain Mark; public failure-case display and tracking permitted |
+| `SRC-PUBLIC-EN-HANDWRITING-002` | Wellcome Collection 1890 Hong Kong Hospital patient register | CC BY-NC 4.0; non-commercial failure-case display and tracking permitted |
 
 The public CBC source file is fixed to ReportSenseAI commit `fe7e800f607c873717b72072018faf36bb83ec77` and was accessed on August 22, 2026. Its source SHA-256 is `700648e4c367ac42a84f3c48123c3daf1aa85114b984aab7752cf4be1523ebb3`; the project output SHA-256 is `379dff3994538c5aa155c988a71ca0649e4a56f349a866688914c287aa3bbda2`. The source ID, fixed commit, and hashes make the material and result independently traceable.
 
-The English photographed source is Wellcome Collection work `wr7zhrz9`; its source SHA-256 is `d2bc3951954dbacd0188ae44659daae319aa028dfd2a8aaf26875edbf16ca875` and project-output SHA-256 is `58757f12e4afaf91202bfdbb78b9d589285f73dbce2f40e691f546eb7b5ba89a`. The handwriting source is work `sxd2fhzw`; its source SHA-256 is `42dae1d4c8e7e4fa5a8f8254224972db834b3b736b6cd767ec8489fcb65da1fd` and output SHA-256 is `8e52e5ef23945fdc128fdb40fa4b97cf263518ccf1e695982136fcd14e8858c5`. Both were accessed on August 22, 2026. Modern English patient photographs remain in protected review until their reuse rights and identity provenance are verified.
+The English photographed source is Wellcome Collection work `wr7zhrz9`; its source SHA-256 is `d2bc3951954dbacd0188ae44659daae319aa028dfd2a8aaf26875edbf16ca875` and project-output SHA-256 is `58757f12e4afaf91202bfdbb78b9d589285f73dbce2f40e691f546eb7b5ba89a`. The handwritten register is work `rj3pbbjd`, digitized volume `b19581841`, page `b19581841_MS_1469_0002.jp2`; its source SHA-256 is `77662f3dd25d776d3c62870bd267e88261369ba0f547a05c6d26bdbca070034f` and output SHA-256 is `73f3cbd4dbbbfa3e905bd0657d2983d0b148af98857a23b2272eaef816d2837d`. Both were accessed on August 22, 2026. Modern English patient photographs remain in protected review until their reuse rights and identity provenance are verified.
 
 ## Human review is required
 
