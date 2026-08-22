@@ -140,7 +140,7 @@ Exact provenance: protected local manifest
 - Landing page: https://www.pumch.cn/reportquery.html
 - Exact image: https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png
 - Accessed: 2026-08-22
-- Authorization: source page does not clearly grant image redistribution; original is not committed
+- Authorization: source page does not clearly grant image redistribution; a traceable evaluation copy is stored at `docs/assets/evaluation/third-party/chinese-pumch-lab-before.png`, outside the repository MIT License
 - Direct identifiers visible: patient name and partially masked order number
 - Original SHA-256: `bc990c967a9fec9e7aafc86b1c7aa5e08adcfeba35e0d3093fa3ce71e3cf4547`
 - Project output SHA-256: `fea8b59940b045445052d098b19f3a1a7eae73e2a6b18d82a8be0b6a6536f695`
@@ -153,7 +153,7 @@ Exact provenance: protected local manifest
 - Landing page: https://www.textin.com/tasks/medical-report-extraction
 - Exact image: https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg
 - Accessed: 2026-08-22
-- Authorization: source page does not clearly grant image redistribution; original is not committed
+- Authorization: source page does not clearly grant image redistribution; a traceable evaluation copy is stored at `docs/assets/evaluation/third-party/chinese-textin-folded-report-before.jpg`, outside the repository MIT License
 - Direct identifiers visible: MR number, age, inpatient number, bed number, QR code; name field blank
 - Original SHA-256: `817ee7f7181a545b083bc47e06b374cad115a7bc3fab0b2bd135350e62f0d80d`
 - Project output SHA-256: `7fad0bd5f67d3a1f5b5fb0a7f86c251b7871ffe36fe9a8a48551d1cfbc5c34ce`

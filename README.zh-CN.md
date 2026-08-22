@@ -48,7 +48,7 @@
 
 | 处理前 | 本项目处理后 |
 | --- | --- |
-| <a href="https://www.pumch.cn/reportquery.html"><img src="https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png" alt="处理前：协和检验报告中可见姓名和部分单号" width="360"></a><br><sub><a href="https://www.pumch.cn/Uploads/Picture/2018/03/23/u5ab4722672c19.png">打开原图</a></sub> | ![处理后：姓名和单号被遮挡，检验结果保留](docs/assets/evaluation/chinese-pumch-lab-after.png) |
+| [![处理前：协和检验报告中可见姓名和部分单号](docs/assets/evaluation/third-party/chinese-pumch-lab-before.png)](https://www.pumch.cn/reportquery.html) | ![处理后：姓名和单号被遮挡，检验结果保留](docs/assets/evaluation/chinese-pumch-lab-after.png) |
 
 | 评估项 | 实际结果 |
 | --- | --- |
@@ -57,7 +57,7 @@
 | 人工对照 | 姓名和单号已覆盖；申请科室被误遮；医生姓名保留 |
 | 最终状态 | 必须人工复核，不能直接对外发布 |
 
-来源页面是 [北京协和医院报告查询](https://www.pumch.cn/reportquery.html)，原始图片地址固定为上面的 PNG 链接。该站点没有在图片附近明确授予再发布许可，仓库只提交项目输出，不把原图复制为 MIT 项目资产。来源编号为 `SRC-CONTROLLED-CN-PUMCH-LAB-001`。原图 SHA-256 为 `bc990c967a9fec9e7aafc86b1c7aa5e08adcfeba35e0d3093fa3ce71e3cf4547`，项目输出 SHA-256 为 `fea8b59940b045445052d098b19f3a1a7eae73e2a6b18d82a8be0b6a6536f695`。
+来源页面是 [北京协和医院报告查询](https://www.pumch.cn/reportquery.html)。为保证效果对比稳定显示，原图副本保存在独立的第三方测评素材目录；该站点未明确授予开放再发布许可，因此原图不属于项目的 MIT 许可范围。来源编号为 `SRC-CONTROLLED-CN-PUMCH-LAB-001`，详细出处和文件指纹见 [第三方测评原图来源](docs/assets/evaluation/third-party/NOTICE.md)。
 
 ### 手机拍照并有明显折痕：MR 检查报告单
 
@@ -65,7 +65,7 @@
 
 | 处理前 | 本项目处理后 |
 | --- | --- |
-| <a href="https://www.textin.com/tasks/medical-report-extraction"><img src="https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg" alt="处理前：折痕检查报告含 MR 号、年龄、住院号和床号" width="360"></a><br><sub><a href="https://www.textin.com/images/medical-report-parse/example-file-cover-3.jpg">打开原图</a></sub> | ![处理后：报告编号和身份字段被遮挡，折痕区域仍需人工检查](docs/assets/evaluation/chinese-textin-folded-report-after.jpg) |
+| [![处理前：折痕检查报告含 MR 号、年龄、住院号和床号](docs/assets/evaluation/third-party/chinese-textin-folded-report-before.jpg)](https://www.textin.com/tasks/medical-report-extraction) | ![处理后：报告编号和身份字段被遮挡，折痕区域仍需人工检查](docs/assets/evaluation/chinese-textin-folded-report-after.jpg) |
 
 | 评估项 | 实际结果 |
 | --- | --- |
@@ -74,7 +74,7 @@
 | 人工对照 | 折痕和二维码仍需检查，部分身份行遮挡范围偏宽 |
 | 最终状态 | 触发版面异常人工复核，不可自动发布 |
 
-素材来自 TextIn 的 [医疗报告抽取示例页](https://www.textin.com/tasks/medical-report-extraction)，原始图片地址固定为上面的 JPG 链接。页面未明确授予图片再发布许可，仓库只提交项目输出。来源编号为 `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001`。原图 SHA-256 为 `817ee7f7181a545b083bc47e06b374cad115a7bc3fab0b2bd135350e62f0d80d`，项目输出 SHA-256 为 `7fad0bd5f67d3a1f5b5fb0a7f86c251b7871ffe36fe9a8a48551d1cfbc5c34ce`。
+素材来自 TextIn 的 [医疗报告抽取示例页](https://www.textin.com/tasks/medical-report-extraction)。为保证效果对比稳定显示，原图副本保存在独立的第三方测评素材目录；页面未明确授予开放再发布许可，因此原图不属于项目的 MIT 许可范围。来源编号为 `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001`，详细出处和文件指纹见 [第三方测评原图来源](docs/assets/evaluation/third-party/NOTICE.md)。
 
 ### 候选素材评估：扬子晚报拍照检验单
 
@@ -180,13 +180,13 @@
 | `SRC-PUBLIC-CN-OCCUPATIONAL-001` | healthyCheckUi 中文职业健康检查表 | LGPL-3.0，上游允许学习和教学案例，可公开展示和追踪 |
 | `SRC-OPEN-CBC-UNVERIFIED-001` | BloodTestReportOCR 中文血常规拍照件 | 项目为 Apache-2.0，但患者授权无法核实，仅限受控评测 |
 | `SRC-REAL-PATHOLOGY-001` | 公开网页中的中文病理报告照片 | 转载和患者授权无法核实，仅限隔离评测 |
-| `SRC-CONTROLLED-CN-PUMCH-LAB-001` | 北京协和医院检验报告截图 | 原站未明确授予图片再发布许可，仅保留项目输出和来源链接 |
-| `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001` | TextIn 折痕 MR 检查报告示例 | 页面未明确授予图片再发布许可，仅保留项目输出和来源链接 |
+| `SRC-CONTROLLED-CN-PUMCH-LAB-001` | 北京协和医院检验报告截图 | 原图副本用于可重复评测；来源可追踪，不属于项目 MIT 许可范围 |
+| `SRC-CONTROLLED-CN-TEXTIN-FOLDED-001` | TextIn 折痕 MR 检查报告示例 | 原图副本用于可重复评测；来源可追踪，不属于项目 MIT 许可范围 |
 | `SRC-CONTROLLED-CN-YANGTSE-001` | 扬子晚报预先打码的拍照检验单 | 原图已有编辑遮挡且项目误遮明显，只作候选素材排除记录 |
 
 公开职业健康检查表固定在 healthyCheckUi 提交 `c6b50346993f7e8debdc567e3469b8fa74eaaafb`，获取日期为 2026 年 8 月 22 日。仓库内处理前文件指纹为 `92a716af0c62ede83854b09e775cfa99eaddfa962558cc7da363e3482bb3ea33`，处理后文件指纹为 `34ca89dc781aeebd70127282c379bcc06f9d3c33698756292a1cc150e4c38db1`。
 
-受保护的来源台账保存网页地址、固定版本、获取日期、文件指纹、授权状态和对应结果。无法确认患者授权的材料不会把原图或原始身份信息收入仓库。
+来源台账保存网页地址、固定版本、获取日期、文件指纹、授权状态和对应结果。仓库内第三方原图集中放在独立目录并保留来源声明；使用或转载前仍需自行确认原发布方许可。
 
 ## 必须人工复核
 
@@ -202,4 +202,4 @@
 
 ## 许可
 
-本项目采用 [MIT License](LICENSE)。许可只适用于项目本身，不代表测试素材可以转载或重新发布。
+本项目采用 [MIT License](LICENSE)。许可只适用于项目本身，不代表第三方测试素材可以转载或重新发布；仓库内第三方原图的来源与授权状态见 [第三方测评原图来源](docs/assets/evaluation/third-party/NOTICE.md)。
