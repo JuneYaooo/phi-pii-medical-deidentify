@@ -15,7 +15,7 @@ This is a local privacy-redaction Skill for laboratory sheets, pathology reports
 
 ## English before-and-after cases
 
-Every case below is an English medical text document with visible patient information in the source. Images that contain medical content but no patient name, identifier, address, phone number, or comparable identity field are not used as de-identification evidence. Chinese evaluations are documented in the [Chinese README](README.md). No masks were added by hand.
+The comparisons below cover a standard report, a photographed prescription, and structured handwriting. Each source contains visible patient information, and the tables show what was covered, what remained readable, and what still requires review. Chinese examples are available in the [Chinese README](README.md).
 
 ### Standard report: modern complete blood count
 
@@ -71,7 +71,7 @@ This scanned register has a clearly printed “Name of Patient” column followe
 
 The source is Wellcome Collection record [Register of patients](https://wellcomecollection.org/works/b9gymynv), produced in 1910 and licensed CC BY 4.0. The exact source is volume `b21892830`, page `b21892830_HB13_6_29_0006.JP2`. The local source ID is `SRC-PUBLIC-EN-REGISTER-1910-001`.
 
-These three cases cover a standard digital report, a phone photograph, and structured handwriting. Each source contains visible patient information, and every result remains subject to human review. Additional historical failure material is retained in the evaluation source ledger, but it is not used as headline product evidence.
+Every result remains subject to human review, especially when handwriting, irregular layouts, barcodes, or QR codes are present.
 
 ## What it does
 
